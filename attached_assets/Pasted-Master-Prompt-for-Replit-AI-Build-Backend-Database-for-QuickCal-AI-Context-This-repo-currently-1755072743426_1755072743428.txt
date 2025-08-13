@@ -1,0 +1,273 @@
+Master Prompt for Replit AI — Build Backend + Database for QuickCal AI
+Context: This repo currently contains a Vite/Builder.io-based frontend running on Replit. I need you to add a production-ready Node.js backend, connect a database, expose documented REST APIs, wire the frontend to use them, and provide deployable configs. Use the instructions below as acceptance criteria.
+________________________________________
+0) High-Level Goals
+1.	Implement a secure, scalable Express + Prisma backend in /server.
+2.	Use PostgreSQL via DATABASE_URL. If not provided, default to SQLite for local dev on Replit. Migrations + seed data included.
+3.	Implement core domain modules matching the spec:
+o	Auth & Profiles (email/password + JWT, optional OAuth placeholders)
+o	Mood Tracking
+o	Meals & Food Items (with nutrition lookup)
+o	AI Coach (rule-based baseline + hooks for model calls)
+o	Assistant Chat (OpenAI-compatible hook; return mock if key missing)
+o	Food Recognition endpoint (image upload → pluggable model URL; return mock if not configured)
+4.	Add OpenAPI (Swagger) docs at /api/docs.
+5.	Add security, logging, validation, CORS, and rate-limiting.
+6.	Update frontend to consume these APIs with a small SDK (/src/api/client.ts).
+7.	Provide scripts, .replit run command, Deployments config, and a README-backend.md with instructions.
+________________________________________
+1) Create/Update Project Structure
+Create these folders/files (keeping existing frontend intact):
+/server
+  ├─ src
+  │  ├─ app.ts
+  │  ├─ server.ts
+  │  ├─ env.ts
+  │  ├─ lib
+  │  │  ├─ prisma.ts
+  │  │  ├─ logger.ts
+  │  │  ├─ cache.ts
+  │  ├─ middleware
+  │  │  ├─ auth.ts
+  │  │  ├─ errors.ts
+  │  │  └─ rateLimit.ts
+  │  ├─ modules
+  │  │  ├─ auth
+  │  │  │  ├─ routes.ts
+  │  │  │  ├─ service.ts
+  │  │  │  └─ schema.ts
+  │  │  ├─ profile
+  │  │  │  ├─ routes.ts
+  │  │  │  └─ service.ts
+  │  │  ├─ mood
+  │  │  │  ├─ routes.ts
+  │  │  │  └─ service.ts
+  │  │  ├─ meals
+  │  │  │  ├─ routes.ts
+  │  │  │  └─ service.ts
+  │  │  ├─ nutrition
+  │  │  │  ├─ routes.ts
+  │  │  │  └─ service.ts
+  │  │  ├─ coach
+  │  │  │  ├─ routes.ts
+  │  │  │  └─ engine.ts
+  │  │  ├─ assistant
+  │  │  │  ├─ routes.ts
+  │  │  │  └─ service.ts
+  │  │  └─ recognition
+  │  │     ├─ routes.ts
+  │  │     └─ service.ts
+  │  └─ docs
+  │     └─ openapi.ts
+  ├─ prisma
+  │  ├─ schema.prisma
+  │  └─ seed.ts
+  ├─ tsconfig.json
+  └─ README-backend.md
+Also create /src/api/client.ts in the frontend with typed wrappers for the new APIs.
+________________________________________
+2) Dependencies & Scripts
+Add and configure these packages in the root package.json:
+•	Runtime: express, cors, helmet, morgan, compression, zod, jsonwebtoken, bcryptjs, multer, express-rate-limit
+•	DB/ORM: prisma, @prisma/client
+•	Docs: swagger-ui-express, yaml
+•	Utilities: dotenv, clsx
+•	Dev: ts-node, typescript, nodemon, concurrently
+Add scripts:
+{
+  "scripts": {
+    "dev:server": "nodemon --watch server/src --exec ts-node server/src/server.ts",
+    "dev:client": "vite",
+    "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
+    "prisma:generate": "prisma generate --schema=server/prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema=server/prisma/schema.prisma",
+    "prisma:seed": "ts-node server/prisma/seed.ts",
+    "build:server": "tsc -p server/tsconfig.json",
+    "start:server": "node server/dist/server.js"
+  }
+}
+Update .replit or Replit run command to: npm run dev.
+________________________________________
+3) Environment Variables (use Replit Secrets)
+Create secrets with sensible fallbacks:
+DATABASE_URL=postgresql://<user>:<pass>@<host>:<port>/<db>?schema=public
+JWT_SECRET=super-secret-change-me
+OPENAI_API_KEY=sk-...
+USDA_API_KEY=...
+NUTRITION_API_BASE=https://api.nal.usda.gov/fdc/v1
+MODEL_SERVER_URL=https://<your-vision-api>/infer
+CLOUDINARY_URL=cloudinary://...
+REDIS_URL=redis://...
+NODE_ENV=development
+Behavior if a key is missing: return deterministic mock data (do not crash).
+________________________________________
+4) Prisma Schema (DB Models)
+Implement this schema in server/prisma/schema.prisma (adapt types as needed):
+// datasource
+ datasource db {
+   provider = env("DATABASE_PROVIDER") // default set by code to postgresql or sqlite
+   url      = env("DATABASE_URL")
+ }
+
+ generator client {
+   provider = "prisma-client-js"
+ }
+
+ model User {
+   id            String   @id @default(cuid())
+   email         String   @unique
+   passwordHash  String
+   createdAt     DateTime @default(now())
+   updatedAt     DateTime @updatedAt
+   profile       Profile?
+   moods         Mood[]
+   meals         Meal[]
+   chats         ChatMessage[]
+ }
+
+ model Profile {
+   id           String   @id @default(cuid())
+   userId       String   @unique
+   user         User     @relation(fields: [userId], references: [id])
+   name         String?
+   age          Int?
+   gender       String?
+   heightCm     Int?
+   weightKg     Float?
+   activity     String? // sedentary, light, moderate, active
+   goals        Json?   // weight loss, maintenance, etc
+   preferences  Json?   // diet type, allergies
+   conditions   Json?   // medical conditions
+ }
+
+ model Mood {
+   id        String   @id @default(cuid())
+   userId    String
+   user      User     @relation(fields: [userId], references: [id])
+   category  String   // stressed, low_energy, sad, excited, anxious, happy
+   note      String?
+   createdAt DateTime @default(now())
+ }
+
+ model Meal {
+   id         String   @id @default(cuid())
+   userId     String
+   user       User     @relation(fields: [userId], references: [id])
+   time       DateTime @default(now())
+   totalKcal  Int?
+   items      MealItem[]
+ }
+
+ model MealItem {
+   id           String  @id @default(cuid())
+   mealId       String
+   meal         Meal    @relation(fields: [mealId], references: [id])
+   name         String
+   quantity     Float   // grams
+   kcal         Float?
+   protein      Float?
+   carbs        Float?
+   fat          Float?
+   meta         Json?
+ }
+
+ model Recommendation {
+   id        String   @id @default(cuid())
+   userId    String
+   user      User     @relation(fields: [userId], references: [id])
+   scope     String   // immediate | meal_planning | lifestyle | warning
+   content   Json
+   createdAt DateTime @default(now())
+ }
+
+ model ChatMessage {
+   id        String   @id @default(cuid())
+   userId    String
+   user      User     @relation(fields: [userId], references: [id])
+   role      String   // user | assistant | system
+   content   String
+   createdAt DateTime @default(now())
+ }
+Include seed.ts to create a demo user and a few foods/meals.
+________________________________________
+5) Server App Basics
+app.ts should configure:
+•	helmet, cors (allow the Vite dev host), compression, morgan
+•	express.json({limit: '5mb'}), multer for image uploads
+•	error handler + Zod validation
+•	rate limiter (e.g., 60 req/min per IP)
+•	mount routes under /api
+•	serve Swagger UI at /api/docs
+server.ts should read env, init Prisma, and listen on process.env.PORT || 5000.
+________________________________________
+6) Modules & Endpoints (Minimum Viable Contract)
+Use Zod for request validation. All responses are JSON. Secure endpoints require Authorization: Bearer <jwt>.
+Auth
+•	POST /api/auth/register { email, password }
+•	POST /api/auth/login { email, password } → { token }
+•	GET /api/auth/me → user + profile
+Profile
+•	GET /api/profile → Profile
+•	PUT /api/profile (partial update)
+Mood
+•	POST /api/mood { category, note? }
+•	GET /api/mood/today
+•	GET /api/mood/timeline?days=30
+Meals
+•	POST /api/meals { time?, items: [{ name, quantity(g), … }] }
+•	GET /api/meals/:id
+•	GET /api/meals/day?date=YYYY-MM-DD
+Nutrition Lookup
+•	GET /api/nutrition/search?q=apple → array of food hits
+•	POST /api/nutrition/calc { items: […] } → totals
+o	If USDA_API_KEY missing, use a small in-repo lookup table for top foods.
+Coach (rule-based baseline)
+•	POST /api/coach/recommendations { currentMood, healthStatus?, recentMeals? }
+o	Implement mapping rules per spec (e.g., stressed → magnesium-rich foods, etc).
+o	Return { immediate, mealPlanning, lifestyle, warnings }.
+Assistant (OpenAI-compatible hook)
+•	POST /api/assistant/chat { messages: [{role, content}], stream? }
+o	If OPENAI_API_KEY set, call Chat Completions (gpt-4o-mini or similar). If not, return a helpful mock response.
+Food Recognition (pluggable)
+•	POST /api/recognition/photo (multipart image) → detected items with portions; if MODEL_SERVER_URL missing, return a deterministic mock payload (top 20 foods).
+________________________________________
+7) Frontend Wiring (minimal)
+Create src/api/client.ts with typed wrappers using fetch to the above endpoints (base URL /). Replace any direct mock calls with this client in the pages/components that log meals, mood check-in, and show recommendations. Ensure auth token is stored securely (localStorage) and attached to requests.
+Add simple UI actions to:
+•	Register/Login, fetch profile
+•	Post a mood
+•	Upload a photo → show parsed foods → allow save as meal
+•	Request coach recommendations → render cards
+•	Assistant chat box calling /api/assistant/chat
+________________________________________
+8) OpenAPI Docs
+Generate runtime OpenAPI via code (docs/openapi.ts) or supply a static spec. Mount with swagger-ui-express at /api/docs. Include schemas for Auth, Profile, Mood, Meal, Nutrition, Coach, Assistant, Recognition.
+________________________________________
+9) Security & Quality
+•	Input validation with Zod
+•	helmet, rate-limiter, CORS allowlist (Replit preview + production domain)
+•	Passwords hashed with bcryptjs(12)
+•	JWT expiry 7d; refresh token TODO placeholder
+•	Centralized error handler with safe messages
+•	Add basic unit tests for services (optional)
+________________________________________
+10) Migrations & Seed
+Run:
+npm run prisma:generate
+npm run prisma:migrate -- --name init
+npm run prisma:seed
+Ensure this works on first boot (SQLite fallback if DATABASE_URL not set).
+________________________________________
+11) Deployment on Replit
+•	Ensure run command is npm run dev for preview (client + server).
+•	For Deployments: create a single web service that runs npm run dev:server (server only) and build the client separately or serve the built client from Express in production. If serving from Express, add a production script to build Vite and serve dist as static.
+Add production scripts:
+{
+  "scripts": {
+    "build": "vite build",
+    "start": "node server/dist/server.js",
+    "postinstall": "prisma generate --schema=server/prisma/schema.prisma"
+  }
+}
+________________________________________
+12) Acceptance Checklist (must pass)
