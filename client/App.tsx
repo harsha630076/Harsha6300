@@ -20,6 +20,11 @@ import FoodSearch from "./pages/FoodSearch";
 import Subscription from "./pages/Subscription";
 import AIAssistant from "./pages/AIAssistant";
 import Notifications from "./pages/Notifications";
+import SignupDetails from "./pages/SignupDetails";
+import PhoneOTP from "./pages/PhoneOTP";
+import OnboardingQuestions from "./pages/OnboardingQuestions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
