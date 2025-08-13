@@ -19,6 +19,7 @@ import Profile from "./pages/Profile";
 import FoodSearch from "./pages/FoodSearch";
 import Subscription from "./pages/Subscription";
 import AIAssistant from "./pages/AIAssistant";
+import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
