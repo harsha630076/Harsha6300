@@ -27,7 +27,11 @@ export function createApp() {
   app.use(cors({
     origin: process.env.NODE_ENV === 'production' 
       ? ['https://your-domain.com'] 
-      : ['http://localhost:8080', 'http://127.0.0.1:8080'],
+      : [
+          'http://localhost:8080', 
+          'http://127.0.0.1:8080',
+          'https://f49df7c3-54e5-4864-b258-a806348b2284-00-3uavv8neufh2p.pike.replit.dev'
+        ],
     credentials: true
   }));
   

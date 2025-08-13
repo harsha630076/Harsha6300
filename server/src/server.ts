@@ -1,6 +1,5 @@
-
 import { createApp } from './app';
-import { env } from './env';
+import { env } from './lib/env';
 import { prisma } from './lib/prisma';
 import { logger } from './lib/logger';
 
