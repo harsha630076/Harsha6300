@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import BottomNav from '@/components/BottomNav';
-import { Bell, Edit3, ChevronRight } from 'lucide-react';
+import { Bell, Edit3, ChevronRight, Camera } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
