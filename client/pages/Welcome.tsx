@@ -52,7 +52,7 @@ export default function Welcome() {
 
       {/* CTA Button */}
       <div className="px-6 pb-8">
-        <Link to="/signup" className="block">
+        <Link to="/subscription" className="block">
           <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-2xl h-14 text-lg font-semibold">
             Get Started
           </Button>
