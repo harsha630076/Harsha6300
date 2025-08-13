@@ -71,7 +71,12 @@ export default function Dashboard() {
               🤖 AI Assistant
             </Button>
           </Link>
-          <Bell className="w-6 h-6 text-gray-600" />
+          <Link to="/notifications" className="relative">
+            <Bell className="w-6 h-6 text-gray-600 hover:text-gray-900" />
+            <div className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+              <span className="text-xs text-white font-bold">3</span>
+            </div>
+          </Link>
           <div className="w-8 h-8 bg-green-200 rounded-full"></div>
         </div>
       </div>
