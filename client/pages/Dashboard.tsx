@@ -66,6 +66,11 @@ export default function Dashboard() {
       <div className="flex items-center justify-between px-6 py-4">
         <h1 className="text-xl font-bold">QuickCal AI</h1>
         <div className="flex items-center gap-3">
+          <Link to="/ai-assistant">
+            <Button size="sm" className="bg-purple-500 hover:bg-purple-600 text-white rounded-full px-3 py-1 text-xs font-medium">
+              🤖 AI Assistant
+            </Button>
+          </Link>
           <Bell className="w-6 h-6 text-gray-600" />
           <div className="w-8 h-8 bg-green-200 rounded-full"></div>
         </div>
