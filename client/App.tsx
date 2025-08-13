@@ -18,6 +18,7 @@ import Insights from "./pages/Insights";
 import Profile from "./pages/Profile";
 import FoodSearch from "./pages/FoodSearch";
 import Subscription from "./pages/Subscription";
+import AIAssistant from "./pages/AIAssistant";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
