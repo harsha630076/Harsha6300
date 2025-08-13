@@ -2,6 +2,9 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import { handleAIAssistant } from "./routes/ai-assistant";
+import { handleFoodScan, handleQuickScan } from "./routes/food-scan";
+import { handleMoodRecommendations, handleGetMoods } from "./routes/mood-recommendations";
 
 export function createServer() {
   const app = express();
