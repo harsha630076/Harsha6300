@@ -127,6 +127,37 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* AI Scan Feature - HIGHLIGHTED */}
+      <div className="px-6 mb-6">
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-200 relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute top-0 right-0 w-20 h-20 bg-primary/10 rounded-full -translate-y-4 translate-x-4"></div>
+          <div className="absolute bottom-0 left-0 w-16 h-16 bg-green-200/20 rounded-full translate-y-4 -translate-x-4"></div>
+
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                <Camera className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">🔥 AI Food Scanner</h3>
+                <p className="text-sm text-green-600 font-medium">Main Feature - Instant Recognition</p>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">
+              Point your camera at any meal for instant AI-powered nutrition analysis with 95% accuracy!
+            </p>
+            <Link to="/scan">
+              <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl h-12 px-6 flex items-center gap-2 shadow-lg">
+                <Camera className="w-5 h-5" />
+                Start AI Scan
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse ml-1"></div>
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+
       {/* Mood Recommendations */}
       <div className="px-6 mb-8">
         <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-100">
