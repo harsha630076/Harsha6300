@@ -83,9 +83,9 @@ export default function Signup() {
           <div className="text-center mt-8">
             <p className="text-sm text-gray-600">
               By signing up, you agree to our{' '}
-              <a href="#" className="text-primary hover:underline">Terms of Service</a>
+              <Link to="/terms" className="text-primary hover:underline">Terms of Service</Link>
               {' '}and{' '}
-              <a href="#" className="text-primary hover:underline">Privacy Policy</a>
+              <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>
             </p>
           </div>
 
