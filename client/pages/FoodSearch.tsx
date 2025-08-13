@@ -295,28 +295,99 @@ export default function FoodSearch() {
       <div className="px-6">
         <div className="space-y-3">
           {filteredFoods.map((food) => (
-            <div key={food.id} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex items-center gap-4">
-              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-2xl">
-                {food.image}
-              </div>
-              
-              <div className="flex-1">
-                <h4 className="font-medium text-gray-900">{food.name}</h4>
-                <p className="text-sm text-gray-600">{food.calories} kcal / {food.unit}</p>
-                <div className="flex items-center gap-4 mt-1">
-                  <span className="text-xs text-gray-500">P: {food.macros.protein}g</span>
-                  <span className="text-xs text-gray-500">C: {food.macros.carbs}g</span>
-                  <span className="text-xs text-gray-500">F: {food.macros.fat}g</span>
+            <div key={food.id} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              {/* Main Food Info */}
+              <div className="flex items-start gap-4 mb-3">
+                <div className="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center text-2xl relative">
+                  {food.image}
+                  {food.verified && (
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs">✓</span>
+                    </div>
+                  )}
                 </div>
+
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-medium text-gray-900">{food.name}</h4>
+                    {food.verified && (
+                      <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Verified</span>
+                    )}
+                  </div>
+
+                  {/* Rating */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <span key={i} className={`text-sm ${i < Math.floor(food.rating) ? 'text-yellow-400' : 'text-gray-300'}`}>
+                          ⭐
+                        </span>
+                      ))}
+                      <span className="text-sm font-medium text-gray-700">{food.rating}</span>
+                    </div>
+                    <span className="text-xs text-gray-500">({food.reviews.toLocaleString()} reviews)</span>
+                  </div>
+
+                  <p className="text-sm text-gray-600 mb-2">
+                    <span className="font-medium">{food.calories} kcal</span> / {food.unit}
+                  </p>
+
+                  {/* Macros */}
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">P: {food.macros.protein}g</span>
+                    <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">C: {food.macros.carbs}g</span>
+                    <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">F: {food.macros.fat}g</span>
+                  </div>
+
+                  {/* Benefits */}
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {food.benefits.slice(0, 3).map((benefit, index) => (
+                      <span key={index} className="text-xs bg-green-50 text-green-600 px-2 py-1 rounded-full">
+                        {benefit}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <Button
+                  onClick={() => handleAddFood(food)}
+                  size="sm"
+                  className="w-10 h-10 p-0 bg-primary hover:bg-primary/90 rounded-full"
+                >
+                  <Plus className="w-5 h-5 text-white" />
+                </Button>
               </div>
 
-              <Button
-                onClick={() => handleAddFood(food)}
-                size="sm"
-                className="w-10 h-10 p-0 bg-primary hover:bg-primary/90 rounded-full"
-              >
-                <Plus className="w-5 h-5 text-white" />
-              </Button>
+              {/* Detailed Nutrition (Expandable) */}
+              <div className="border-t border-gray-100 pt-3">
+                <details className="group">
+                  <summary className="flex items-center justify-between cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                    <span>View detailed nutrition</span>
+                    <span className="group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
+                    <div className="bg-gray-50 rounded-lg p-2">
+                      <div className="font-medium text-gray-700 mb-1">Fiber</div>
+                      <div className="text-gray-900">{food.nutrition.fiber}g</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-2">
+                      <div className="font-medium text-gray-700 mb-1">Sugar</div>
+                      <div className="text-gray-900">{food.nutrition.sugar}g</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-2">
+                      <div className="font-medium text-gray-700 mb-1">Sodium</div>
+                      <div className="text-gray-900">{food.nutrition.sodium}mg</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-2">
+                      <div className="font-medium text-gray-700 mb-1">Potassium</div>
+                      <div className="text-gray-900">{food.nutrition.potassium}mg</div>
+                    </div>
+                  </div>
+                  <div className="mt-2 text-xs text-gray-500">
+                    Barcode: {food.barcode}
+                  </div>
+                </details>
+              </div>
             </div>
           ))}
         </div>
