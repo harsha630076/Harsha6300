@@ -11,7 +11,7 @@
     ]
   },
   "scripts": {
-    "dev:server": "nodemon --watch server/src --exec ts-node server/src/server.ts",
+    "dev:server": "nodemon --watch server/src --exec tsx server/src/server.ts",
     "dev:client": "vite",
     "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
     "prisma:generate": "prisma generate --schema=server/prisma/schema.prisma",
