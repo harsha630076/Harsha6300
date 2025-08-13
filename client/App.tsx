@@ -17,6 +17,7 @@ import Log from "./pages/Log";
 import Insights from "./pages/Insights";
 import Profile from "./pages/Profile";
 import FoodSearch from "./pages/FoodSearch";
+import Subscription from "./pages/Subscription";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
