@@ -1,0 +1,117 @@
+ Save, then diagnose (copy-paste in Shell)
+bash
+Copy
+Edit
+# make sure you're at project root
+pwd
+git rev-parse --show-toplevel 2>/dev/null || echo "Not in a git repo"
+
+echo "== ROOT STATUS =="
+git status -s
+
+echo "== NESTED REPOS (.git folders besides root) =="
+find . -type d -name .git -not -path "./.git" -printf "%h\n" || true
+
+echo "== IGNORED? (client/server/public) =="
+git check-ignore -v client server public 2>/dev/null || true
+
+echo "== UNTRACKED FILES (first 50) =="
+git ls-files --others --exclude-standard | head -n 50
+
+echo "== CURRENT BRANCH & REMOTE =="
+git branch -vv
+git remote -v
+Interpret quickly:
+
+If you see paths printed under NESTED REPOS (e.g. client, server), your changes are inside separate Git repos, so the root repo can’t see them.
+
+If git check-ignore prints rules for your folders/files, they’re being ignored.
+
+If git status -s shows nothing, and there are no nested repos, you either already committed or didn’t save.
+
+2) Fix based on the cause
+A) Nested repo(s) found (most common in Replit)
+You probably cloned a template where client or server came with its own .git. Either commit inside each subrepo or flatten them into the root. Easiest is to flatten:
+
+bash
+Copy
+Edit
+# FLATTEN nested repos so root Git can track everything
+for d in client server; do
+  if [ -d "$d/.git" ]; then
+    echo "Flattening $d ..."
+    rm -rf "$d/.git"
+  fi
+done
+
+# Now commit from the root
+git add -A
+git commit -m "Track client/server in root repo"
+git push
+If you actually want them as submodules, that’s different—say so and I’ll give the exact git submodule steps.
+
+B) Files are ignored by .gitignore
+See which rule is ignoring them, then either adjust .gitignore or force-add:
+
+bash
+Copy
+Edit
+# show why a file is ignored
+git check-ignore -v client/components/BottomNav.tsx
+
+# temporarily force add ignored files
+git add -f client/components/BottomNav.tsx
+git commit -m "Force add ignored file(s)"
+git push
+If whole folders (e.g., client/) are ignored in .gitignore, remove or refine that rule, then git add -A && git commit.
+
+C) Index lock / wrong branch / unsaved files
+bash
+Copy
+Edit
+# clear any stale lock
+rm -f .git/index.lock
+
+# make sure you’re on main (or the branch you expect)
+git branch --show-current
+# if needed:
+# git switch main 2>/dev/null || git switch -c main
+
+# now commit again
+git add -A
+git commit -m "Commit pending work"
+git push
+Also confirm Replit “Auto-save” is on, or press Ctrl+S on changed files.
+
+3) One-shot “do it for me” script (safe default)
+This flattens nested repos if present, then commits everything from the root.
+
+bash
+Copy
+Edit
+set -e
+rm -f .git/index.lock || true
+
+# flatten nested repos if any
+for d in $(find . -type d -name .git -not -path "./.git" -printf "%h\n"); do
+  echo "Flattening nested repo at $d"
+  rm -rf "$d/.git"
+done
+
+# stage, commit, push
+git add -A
+git commit -m "Commit workspace changes (flatten nested repos if any)" || echo "No changes to commit."
+git push || true
+4) If you still see “Nothing to commit”
+You truly have no changes (everything already committed), or
+
+You’re editing a different workspace folder than your Git root.
+
+Run:
+
+bash
+Copy
+Edit
+git log --oneline -5
+If your recent work isn’t there, you edited files outside the repo Git is tracking. Move those files into the repo, then git add -A && git commit.
+
