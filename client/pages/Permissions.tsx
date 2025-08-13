@@ -1,29 +1,29 @@
-import { Button } from '@/components/ui/button';
-import { Camera, Mic } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Camera, Mic } from "lucide-react";
 
 export default function Permissions() {
   const handleAllow = async () => {
     try {
       // Request camera permission
       await navigator.mediaDevices.getUserMedia({ video: true });
-      
-      // Request microphone permission  
+
+      // Request microphone permission
       await navigator.mediaDevices.getUserMedia({ audio: true });
-      
-      console.log('Permissions granted');
+
+      console.log("Permissions granted");
       // Redirect to dashboard
-      window.location.href = '/dashboard';
+      window.location.href = "/dashboard";
     } catch (error) {
-      console.log('Permission denied or error:', error);
+      console.log("Permission denied or error:", error);
       // Still redirect to dashboard for demo purposes
-      window.location.href = '/dashboard';
+      window.location.href = "/dashboard";
     }
   };
 
   const handleDeny = () => {
-    console.log('Permissions denied');
+    console.log("Permissions denied");
     // Redirect to dashboard anyway for demo
-    window.location.href = '/dashboard';
+    window.location.href = "/dashboard";
   };
 
   return (
@@ -39,7 +39,7 @@ export default function Permissions() {
             <div className="w-1 h-3 bg-gray-300 rounded-full"></div>
           </div>
           <svg className="w-6 h-6 ml-2" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M2 16h20v2H2zm1.5-5L12 7l8.5 4v2H12v2h8.5v2H3.5z"/>
+            <path d="M2 16h20v2H2zm1.5-5L12 7l8.5 4v2H12v2h8.5v2H3.5z" />
           </svg>
           <div className="w-6 h-3 bg-gray-900 rounded-sm ml-1"></div>
         </div>
@@ -58,11 +58,14 @@ export default function Permissions() {
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl font-bold text-center mb-4">Enable Essential Permissions</h1>
-        
+        <h1 className="text-2xl font-bold text-center mb-4">
+          Enable Essential Permissions
+        </h1>
+
         {/* Description */}
         <p className="text-center text-gray-600 mb-12 max-w-sm leading-relaxed">
-          QuickCal AI uses your camera for instant meal scanning and your microphone for voice commands to enhance your tracking experience.
+          QuickCal AI uses your camera for instant meal scanning and your
+          microphone for voice commands to enhance your tracking experience.
         </p>
 
         {/* Buttons */}
@@ -73,7 +76,7 @@ export default function Permissions() {
           >
             Allow
           </Button>
-          
+
           <Button
             onClick={handleDeny}
             variant="outline"

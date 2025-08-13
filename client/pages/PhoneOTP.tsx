@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useState, useRef, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
 
 export default function PhoneOTP() {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [phoneNumber] = useState('+1 (555) 123-4567'); // Mock phone number
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [phoneNumber] = useState("+1 (555) 123-4567"); // Mock phone number
   const [timeLeft, setTimeLeft] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -27,7 +27,7 @@ export default function PhoneOTP() {
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length > 1) return;
-    
+
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
@@ -39,29 +39,29 @@ export default function PhoneOTP() {
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
   };
 
   const handleResendCode = () => {
-    console.log('Resending OTP code');
+    console.log("Resending OTP code");
     setTimeLeft(60);
     setCanResend(false);
-    setOtp(['', '', '', '', '', '']);
+    setOtp(["", "", "", "", "", ""]);
     inputRefs.current[0]?.focus();
   };
 
   const handleVerify = () => {
-    const otpCode = otp.join('');
+    const otpCode = otp.join("");
     if (otpCode.length === 6) {
-      console.log('Verifying OTP:', otpCode);
+      console.log("Verifying OTP:", otpCode);
       // Simulate successful verification
-      window.location.href = '/signup-details';
+      window.location.href = "/signup-details";
     }
   };
 
-  const isComplete = otp.every(digit => digit !== '');
+  const isComplete = otp.every((digit) => digit !== "");
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -83,9 +83,12 @@ export default function PhoneOTP() {
           </div>
 
           {/* Title and Description */}
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Enter verification code</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Enter verification code
+          </h2>
           <p className="text-gray-600 mb-8">
-            We've sent a 6-digit code to<br />
+            We've sent a 6-digit code to
+            <br />
             <span className="font-medium text-gray-900">{phoneNumber}</span>
           </p>
 
@@ -110,7 +113,8 @@ export default function PhoneOTP() {
           <div className="mb-6">
             {!canResend ? (
               <p className="text-sm text-gray-600">
-                Resend code in <span className="font-medium text-primary">{timeLeft}s</span>
+                Resend code in{" "}
+                <span className="font-medium text-primary">{timeLeft}s</span>
               </p>
             ) : (
               <button
@@ -132,8 +136,14 @@ export default function PhoneOTP() {
           </Button>
 
           {/* Change Number */}
-          <Link to="/signup" className="text-sm text-gray-600 hover:text-gray-900">
-            Wrong number? <span className="text-primary font-medium">Change phone number</span>
+          <Link
+            to="/signup"
+            className="text-sm text-gray-600 hover:text-gray-900"
+          >
+            Wrong number?{" "}
+            <span className="text-primary font-medium">
+              Change phone number
+            </span>
           </Link>
         </div>
       </div>
@@ -146,9 +156,12 @@ export default function PhoneOTP() {
               <span className="text-blue-600 text-sm">ℹ️</span>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-1">Having trouble?</h4>
+              <h4 className="font-semibold text-gray-900 mb-1">
+                Having trouble?
+              </h4>
               <p className="text-sm text-gray-600">
-                Make sure your phone can receive SMS messages. If you don't receive the code, try requesting a new one.
+                Make sure your phone can receive SMS messages. If you don't
+                receive the code, try requesting a new one.
               </p>
             </div>
           </div>

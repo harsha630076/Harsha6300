@@ -1,16 +1,16 @@
-import { Home, RotateCcw, Camera, TrendingUp, User } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
-import { cn } from '@/lib/utils';
+import { Home, RotateCcw, Camera, TrendingUp, User } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 export default function BottomNav() {
   const location = useLocation();
 
   const navItems = [
-    { icon: Home, label: 'Home', path: '/dashboard' },
-    { icon: RotateCcw, label: 'Log', path: '/log' },
-    { icon: Camera, label: 'Scan', path: '/scan' },
-    { icon: TrendingUp, label: 'Insights', path: '/insights' },
-    { icon: User, label: 'Profile', path: '/profile' },
+    { icon: Home, label: "Home", path: "/dashboard" },
+    { icon: RotateCcw, label: "Log", path: "/log" },
+    { icon: Camera, label: "Scan", path: "/scan" },
+    { icon: TrendingUp, label: "Insights", path: "/insights" },
+    { icon: User, label: "Profile", path: "/profile" },
   ];
 
   return (
@@ -18,7 +18,7 @@ export default function BottomNav() {
       <div className="flex items-center justify-around py-2">
         {navItems.map(({ icon: Icon, label, path }) => {
           const isActive = location.pathname === path;
-          const isScanFeature = path === '/scan';
+          const isScanFeature = path === "/scan";
 
           return (
             <Link
@@ -26,10 +26,8 @@ export default function BottomNav() {
               to={path}
               className={cn(
                 "flex flex-col items-center justify-center py-2 px-3 rounded-lg min-w-[60px] relative",
-                isActive
-                  ? "text-primary"
-                  : "text-gray-500 hover:text-gray-700",
-                isScanFeature && "transform scale-110"
+                isActive ? "text-primary" : "text-gray-500 hover:text-gray-700",
+                isScanFeature && "transform scale-110",
               )}
             >
               {isScanFeature && (
@@ -44,13 +42,17 @@ export default function BottomNav() {
                 className={cn(
                   "w-6 h-6 mb-1 relative z-10",
                   isActive && "fill-current",
-                  isScanFeature && "text-primary"
+                  isScanFeature && "text-primary",
                 )}
               />
-              <span className={cn(
-                "text-xs font-medium relative z-10",
-                isScanFeature && "text-primary font-bold"
-              )}>{label}</span>
+              <span
+                className={cn(
+                  "text-xs font-medium relative z-10",
+                  isScanFeature && "text-primary font-bold",
+                )}
+              >
+                {label}
+              </span>
             </Link>
           );
         })}

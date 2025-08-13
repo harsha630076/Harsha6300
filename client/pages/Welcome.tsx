@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { Camera, Mic, Sparkles, TrendingUp, Heart, Zap } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { Camera, Mic, Sparkles, TrendingUp, Heart, Zap } from "lucide-react";
 
 export default function Welcome() {
   return (
@@ -21,7 +21,8 @@ export default function Welcome() {
             AI-Powered Calorie & Health Tracking
           </h1>
           <p className="text-lg text-gray-600 mb-8 max-w-sm">
-            Transform your health journey with intelligent food recognition and personalized recommendations
+            Transform your health journey with intelligent food recognition and
+            personalized recommendations
           </p>
         </div>
 
@@ -39,7 +40,9 @@ export default function Welcome() {
           </div>
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20">
             <TrendingUp className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-900">Progress Insights</p>
+            <p className="text-sm font-medium text-gray-900">
+              Progress Insights
+            </p>
             <p className="text-xs text-gray-600">Track your journey</p>
           </div>
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20">
@@ -58,8 +61,12 @@ export default function Welcome() {
           </Button>
         </Link>
         <div className="text-center mt-4">
-          <Link to="/login" className="text-sm text-gray-600 hover:text-gray-900">
-            Already have an account? <span className="text-primary font-medium">Sign In</span>
+          <Link
+            to="/login"
+            className="text-sm text-gray-600 hover:text-gray-900"
+          >
+            Already have an account?{" "}
+            <span className="text-primary font-medium">Sign In</span>
           </Link>
         </div>
       </div>

@@ -1,208 +1,223 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import BottomNav from '@/components/BottomNav';
-import { Search, Filter, Plus, Clock } from 'lucide-react';
-import { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import BottomNav from "@/components/BottomNav";
+import { Search, Filter, Plus, Clock } from "lucide-react";
+import { useState } from "react";
 
 export default function FoodSearch() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const categories = ['All', 'Fruits', 'Grains', 'Proteins', 'Dairy', 'Vegetables'];
+  const categories = [
+    "All",
+    "Fruits",
+    "Grains",
+    "Proteins",
+    "Dairy",
+    "Vegetables",
+  ];
 
   const foodDatabase = [
     {
       id: 1,
-      name: 'Red Apple',
+      name: "Red Apple",
       calories: 52,
-      unit: '100g',
-      category: 'Fruits',
-      image: '🍎',
+      unit: "100g",
+      category: "Fruits",
+      image: "🍎",
       macros: { protein: 0.3, carbs: 14, fat: 0.2 },
       rating: 4.8,
       reviews: 2847,
       verified: true,
       nutrition: { fiber: 2.4, sugar: 10.4, sodium: 1, potassium: 107 },
-      benefits: ['Heart Health', 'Weight Management', 'Digestive Health'],
-      barcode: '123456789012'
+      benefits: ["Heart Health", "Weight Management", "Digestive Health"],
+      barcode: "123456789012",
     },
     {
       id: 2,
-      name: 'Instant Oatmeal',
+      name: "Instant Oatmeal",
       calories: 68,
-      unit: '100g',
-      category: 'Grains',
-      image: '🥣',
+      unit: "100g",
+      category: "Grains",
+      image: "🥣",
       macros: { protein: 2.4, carbs: 12, fat: 1.4 },
       rating: 4.5,
       reviews: 1923,
       verified: true,
       nutrition: { fiber: 1.7, sugar: 0.9, sodium: 49, potassium: 61 },
-      benefits: ['Energy Boost', 'Heart Health', 'Blood Sugar Control'],
-      barcode: '123456789013'
+      benefits: ["Energy Boost", "Heart Health", "Blood Sugar Control"],
+      barcode: "123456789013",
     },
     {
       id: 3,
-      name: 'Grilled Chicken Breast',
+      name: "Grilled Chicken Breast",
       calories: 165,
-      unit: '100g',
-      category: 'Proteins',
-      image: '🍗',
+      unit: "100g",
+      category: "Proteins",
+      image: "🍗",
       macros: { protein: 31, carbs: 0, fat: 3.6 },
       rating: 4.9,
       reviews: 5672,
       verified: true,
       nutrition: { fiber: 0, sugar: 0, sodium: 74, potassium: 256 },
-      benefits: ['Muscle Building', 'Weight Loss', 'High Protein'],
-      barcode: '123456789014'
+      benefits: ["Muscle Building", "Weight Loss", "High Protein"],
+      barcode: "123456789014",
     },
     {
       id: 4,
-      name: 'Greek Yogurt (Plain)',
+      name: "Greek Yogurt (Plain)",
       calories: 59,
-      unit: '100g',
-      category: 'Dairy',
-      image: '🥛',
+      unit: "100g",
+      category: "Dairy",
+      image: "🥛",
       macros: { protein: 10, carbs: 3.6, fat: 0.4 },
       rating: 4.7,
       reviews: 3458,
       verified: true,
       nutrition: { fiber: 0, sugar: 3.6, sodium: 36, potassium: 141 },
-      benefits: ['Probiotics', 'Bone Health', 'Protein Rich'],
-      barcode: '123456789015'
+      benefits: ["Probiotics", "Bone Health", "Protein Rich"],
+      barcode: "123456789015",
     },
     {
       id: 5,
-      name: 'Steamed Broccoli',
+      name: "Steamed Broccoli",
       calories: 34,
-      unit: '100g',
-      category: 'Vegetables',
-      image: '🥦',
+      unit: "100g",
+      category: "Vegetables",
+      image: "🥦",
       macros: { protein: 2.8, carbs: 7, fat: 0.4 },
       rating: 4.3,
       reviews: 1876,
       verified: true,
       nutrition: { fiber: 2.6, sugar: 1.5, sodium: 33, potassium: 316 },
-      benefits: ['Vitamin C', 'Antioxidants', 'Cancer Fighting'],
-      barcode: '123456789016'
+      benefits: ["Vitamin C", "Antioxidants", "Cancer Fighting"],
+      barcode: "123456789016",
     },
     {
       id: 6,
-      name: 'Almonds (Raw)',
+      name: "Almonds (Raw)",
       calories: 579,
-      unit: '100g',
-      category: 'Nuts',
-      image: '🥜',
+      unit: "100g",
+      category: "Nuts",
+      image: "🥜",
       macros: { protein: 21.2, carbs: 21.6, fat: 49.9 },
       rating: 4.8,
       reviews: 4293,
       verified: true,
       nutrition: { fiber: 12.5, sugar: 4.4, sodium: 1, potassium: 733 },
-      benefits: ['Heart Health', 'Brain Function', 'Healthy Fats'],
-      barcode: '123456789017'
+      benefits: ["Heart Health", "Brain Function", "Healthy Fats"],
+      barcode: "123456789017",
     },
     {
       id: 7,
-      name: 'Quinoa (Cooked)',
+      name: "Quinoa (Cooked)",
       calories: 120,
-      unit: '100g',
-      category: 'Grains',
-      image: '🌾',
+      unit: "100g",
+      category: "Grains",
+      image: "🌾",
       macros: { protein: 4.4, carbs: 22, fat: 1.9 },
       rating: 4.6,
       reviews: 2956,
       verified: true,
       nutrition: { fiber: 2.8, sugar: 0.9, sodium: 7, potassium: 172 },
-      benefits: ['Complete Protein', 'Gluten Free', 'Mineral Rich'],
-      barcode: '123456789018'
+      benefits: ["Complete Protein", "Gluten Free", "Mineral Rich"],
+      barcode: "123456789018",
     },
     {
       id: 8,
-      name: 'Baked Salmon Fillet',
+      name: "Baked Salmon Fillet",
       calories: 208,
-      unit: '100g',
-      category: 'Proteins',
-      image: '🐟',
+      unit: "100g",
+      category: "Proteins",
+      image: "🐟",
       macros: { protein: 25, carbs: 0, fat: 12 },
       rating: 4.9,
       reviews: 3874,
       verified: true,
       nutrition: { fiber: 0, sugar: 0, sodium: 59, potassium: 363 },
-      benefits: ['Omega-3', 'Heart Health', 'Brain Function'],
-      barcode: '123456789019'
+      benefits: ["Omega-3", "Heart Health", "Brain Function"],
+      barcode: "123456789019",
     },
     {
       id: 9,
-      name: 'Avocado',
+      name: "Avocado",
       calories: 160,
-      unit: '100g',
-      category: 'Fruits',
-      image: '🥑',
+      unit: "100g",
+      category: "Fruits",
+      image: "🥑",
       macros: { protein: 2, carbs: 9, fat: 15 },
       rating: 4.7,
       reviews: 5629,
       verified: true,
       nutrition: { fiber: 7, sugar: 0.7, sodium: 7, potassium: 485 },
-      benefits: ['Healthy Fats', 'Fiber Rich', 'Potassium'],
-      barcode: '123456789020'
+      benefits: ["Healthy Fats", "Fiber Rich", "Potassium"],
+      barcode: "123456789020",
     },
     {
       id: 10,
-      name: 'Sweet Potato (Baked)',
+      name: "Sweet Potato (Baked)",
       calories: 90,
-      unit: '100g',
-      category: 'Vegetables',
-      image: '🍠',
+      unit: "100g",
+      category: "Vegetables",
+      image: "🍠",
       macros: { protein: 2, carbs: 21, fat: 0.1 },
       rating: 4.5,
       reviews: 2847,
       verified: true,
       nutrition: { fiber: 3.3, sugar: 6.8, sodium: 6, potassium: 475 },
-      benefits: ['Vitamin A', 'Complex Carbs', 'Antioxidants'],
-      barcode: '123456789021'
+      benefits: ["Vitamin A", "Complex Carbs", "Antioxidants"],
+      barcode: "123456789021",
     },
     {
       id: 11,
-      name: 'Spinach (Fresh)',
+      name: "Spinach (Fresh)",
       calories: 23,
-      unit: '100g',
-      category: 'Vegetables',
-      image: '🥬',
+      unit: "100g",
+      category: "Vegetables",
+      image: "🥬",
       macros: { protein: 2.9, carbs: 3.6, fat: 0.4 },
       rating: 4.4,
       reviews: 1934,
       verified: true,
       nutrition: { fiber: 2.2, sugar: 0.4, sodium: 79, potassium: 558 },
-      benefits: ['Iron Rich', 'Folate', 'Vitamin K'],
-      barcode: '123456789022'
+      benefits: ["Iron Rich", "Folate", "Vitamin K"],
+      barcode: "123456789022",
     },
     {
       id: 12,
-      name: 'Blueberries',
+      name: "Blueberries",
       calories: 57,
-      unit: '100g',
-      category: 'Fruits',
-      image: '🫐',
+      unit: "100g",
+      category: "Fruits",
+      image: "🫐",
       macros: { protein: 0.7, carbs: 14, fat: 0.3 },
       rating: 4.9,
       reviews: 4586,
       verified: true,
       nutrition: { fiber: 2.4, sugar: 10, sodium: 1, potassium: 77 },
-      benefits: ['Antioxidants', 'Brain Health', 'Anti-Aging'],
-      barcode: '123456789023'
-    }
+      benefits: ["Antioxidants", "Brain Health", "Anti-Aging"],
+      barcode: "123456789023",
+    },
   ];
 
-  const filteredFoods = foodDatabase.filter(food => {
-    const matchesSearch = food.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || food.category === selectedCategory;
+  const filteredFoods = foodDatabase.filter((food) => {
+    const matchesSearch = food.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All" || food.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  const recentSearches = ['Avocado', 'Quinoa', 'Chicken breast', 'Greek yogurt'];
+  const recentSearches = [
+    "Avocado",
+    "Quinoa",
+    "Chicken breast",
+    "Greek yogurt",
+  ];
 
-  const handleAddFood = (food: typeof foodDatabase[0]) => {
-    console.log('Adding food to log:', food);
+  const handleAddFood = (food: (typeof foodDatabase)[0]) => {
+    console.log("Adding food to log:", food);
     // Simulate adding to food log
   };
 
@@ -219,7 +234,7 @@ export default function FoodSearch() {
             <div className="w-1 h-3 bg-gray-300 rounded-full"></div>
           </div>
           <svg className="w-6 h-6 ml-2" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M2 16h20v2H2zm1.5-5L12 7l8.5 4v2H12v2h8.5v2H3.5z"/>
+            <path d="M2 16h20v2H2zm1.5-5L12 7l8.5 4v2H12v2h8.5v2H3.5z" />
           </svg>
           <div className="w-6 h-3 bg-gray-900 rounded-sm ml-1"></div>
         </div>
@@ -260,8 +275,8 @@ export default function FoodSearch() {
               onClick={() => setSelectedCategory(category)}
               className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 selectedCategory === category
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? "bg-orange-500 text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
               {category}
@@ -271,11 +286,13 @@ export default function FoodSearch() {
       </div>
 
       {/* Recent Searches (shown when search is empty) */}
-      {searchQuery === '' && (
+      {searchQuery === "" && (
         <div className="px-6 mb-6">
           <div className="flex items-center gap-2 mb-3">
             <Clock className="w-4 h-4 text-gray-500" />
-            <h3 className="text-sm font-medium text-gray-700">Recent Searches</h3>
+            <h3 className="text-sm font-medium text-gray-700">
+              Recent Searches
+            </h3>
           </div>
           <div className="flex flex-wrap gap-2">
             {recentSearches.map((search) => (
@@ -295,7 +312,10 @@ export default function FoodSearch() {
       <div className="px-6">
         <div className="space-y-3">
           {filteredFoods.map((food) => (
-            <div key={food.id} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div
+              key={food.id}
+              className="bg-white rounded-xl p-4 shadow-sm border border-gray-100"
+            >
               {/* Main Food Info */}
               <div className="flex items-start gap-4 mb-3">
                 <div className="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center text-2xl relative">
@@ -311,7 +331,9 @@ export default function FoodSearch() {
                   <div className="flex items-center gap-2 mb-1">
                     <h4 className="font-medium text-gray-900">{food.name}</h4>
                     {food.verified && (
-                      <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Verified</span>
+                      <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                        Verified
+                      </span>
                     )}
                   </div>
 
@@ -319,30 +341,47 @@ export default function FoodSearch() {
                   <div className="flex items-center gap-2 mb-2">
                     <div className="flex items-center gap-1">
                       {[...Array(5)].map((_, i) => (
-                        <span key={i} className={`text-sm ${i < Math.floor(food.rating) ? 'text-yellow-400' : 'text-gray-300'}`}>
+                        <span
+                          key={i}
+                          className={`text-sm ${i < Math.floor(food.rating) ? "text-yellow-400" : "text-gray-300"}`}
+                        >
                           ⭐
                         </span>
                       ))}
-                      <span className="text-sm font-medium text-gray-700">{food.rating}</span>
+                      <span className="text-sm font-medium text-gray-700">
+                        {food.rating}
+                      </span>
                     </div>
-                    <span className="text-xs text-gray-500">({food.reviews.toLocaleString()} reviews)</span>
+                    <span className="text-xs text-gray-500">
+                      ({food.reviews.toLocaleString()} reviews)
+                    </span>
                   </div>
 
                   <p className="text-sm text-gray-600 mb-2">
-                    <span className="font-medium">{food.calories} kcal</span> / {food.unit}
+                    <span className="font-medium">{food.calories} kcal</span> /{" "}
+                    {food.unit}
                   </p>
 
                   {/* Macros */}
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">P: {food.macros.protein}g</span>
-                    <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">C: {food.macros.carbs}g</span>
-                    <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">F: {food.macros.fat}g</span>
+                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                      P: {food.macros.protein}g
+                    </span>
+                    <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
+                      C: {food.macros.carbs}g
+                    </span>
+                    <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">
+                      F: {food.macros.fat}g
+                    </span>
                   </div>
 
                   {/* Benefits */}
                   <div className="flex flex-wrap gap-1 mb-3">
                     {food.benefits.slice(0, 3).map((benefit, index) => (
-                      <span key={index} className="text-xs bg-green-50 text-green-600 px-2 py-1 rounded-full">
+                      <span
+                        key={index}
+                        className="text-xs bg-green-50 text-green-600 px-2 py-1 rounded-full"
+                      >
                         {benefit}
                       </span>
                     ))}
@@ -363,24 +402,42 @@ export default function FoodSearch() {
                 <details className="group">
                   <summary className="flex items-center justify-between cursor-pointer text-sm text-gray-600 hover:text-gray-900">
                     <span>View detailed nutrition</span>
-                    <span className="group-open:rotate-180 transition-transform">▼</span>
+                    <span className="group-open:rotate-180 transition-transform">
+                      ▼
+                    </span>
                   </summary>
                   <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
                     <div className="bg-gray-50 rounded-lg p-2">
-                      <div className="font-medium text-gray-700 mb-1">Fiber</div>
-                      <div className="text-gray-900">{food.nutrition.fiber}g</div>
+                      <div className="font-medium text-gray-700 mb-1">
+                        Fiber
+                      </div>
+                      <div className="text-gray-900">
+                        {food.nutrition.fiber}g
+                      </div>
                     </div>
                     <div className="bg-gray-50 rounded-lg p-2">
-                      <div className="font-medium text-gray-700 mb-1">Sugar</div>
-                      <div className="text-gray-900">{food.nutrition.sugar}g</div>
+                      <div className="font-medium text-gray-700 mb-1">
+                        Sugar
+                      </div>
+                      <div className="text-gray-900">
+                        {food.nutrition.sugar}g
+                      </div>
                     </div>
                     <div className="bg-gray-50 rounded-lg p-2">
-                      <div className="font-medium text-gray-700 mb-1">Sodium</div>
-                      <div className="text-gray-900">{food.nutrition.sodium}mg</div>
+                      <div className="font-medium text-gray-700 mb-1">
+                        Sodium
+                      </div>
+                      <div className="text-gray-900">
+                        {food.nutrition.sodium}mg
+                      </div>
                     </div>
                     <div className="bg-gray-50 rounded-lg p-2">
-                      <div className="font-medium text-gray-700 mb-1">Potassium</div>
-                      <div className="text-gray-900">{food.nutrition.potassium}mg</div>
+                      <div className="font-medium text-gray-700 mb-1">
+                        Potassium
+                      </div>
+                      <div className="text-gray-900">
+                        {food.nutrition.potassium}mg
+                      </div>
                     </div>
                   </div>
                   <div className="mt-2 text-xs text-gray-500">
@@ -392,12 +449,14 @@ export default function FoodSearch() {
           ))}
         </div>
 
-        {filteredFoods.length === 0 && searchQuery !== '' && (
+        {filteredFoods.length === 0 && searchQuery !== "" && (
           <div className="text-center py-12">
             <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center text-4xl mb-4 mx-auto">
               🔍
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No food found</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              No food found
+            </h3>
             <p className="text-gray-600 mb-4">
               Try searching with different keywords or browse categories above.
             </p>

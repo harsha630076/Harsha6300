@@ -1,49 +1,49 @@
-import BottomNav from '@/components/BottomNav';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Bell, Download } from 'lucide-react';
+import BottomNav from "@/components/BottomNav";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Bell, Download } from "lucide-react";
 
 export default function Profile() {
   const user = {
-    name: 'Alice Johnson',
-    email: 'alice.j@example.com',
+    name: "Alice Johnson",
+    email: "alice.j@example.com",
     dailyCalorieGoal: 1850,
     totalCalorieGoal: 2200,
-    progressPercentage: 84
+    progressPercentage: 84,
   };
 
   const personalInfo = [
-    { label: 'Name', value: 'Alice Johnson' },
-    { label: 'Age', value: '30' },
-    { label: 'Height', value: '165 cm' },
-    { label: 'Weight', value: '60 kg' }
+    { label: "Name", value: "Alice Johnson" },
+    { label: "Age", value: "30" },
+    { label: "Height", value: "165 cm" },
+    { label: "Weight", value: "60 kg" },
   ];
 
   const goals = [
-    { label: 'Weight Target', value: '58 kg' },
-    { label: 'Weekly Goal', value: 'Lose 0.5 kg' },
-    { label: 'Activity Level', value: 'Moderate' }
+    { label: "Weight Target", value: "58 kg" },
+    { label: "Weekly Goal", value: "Lose 0.5 kg" },
+    { label: "Activity Level", value: "Moderate" },
   ];
 
   const dietaryPreferences = [
-    { label: 'Diet Type', value: 'Vegetarian' },
-    { label: 'Allergies', value: 'Nuts, Shellfish' },
-    { label: 'Dislikes', value: 'Mushrooms' }
+    { label: "Diet Type", value: "Vegetarian" },
+    { label: "Allergies", value: "Nuts, Shellfish" },
+    { label: "Dislikes", value: "Mushrooms" },
   ];
 
   const linkedDevices = [
-    { label: 'Fitness Tracker', value: 'Connected', status: 'connected' },
-    { label: 'Smart Scale', value: 'Not Linked', status: 'disconnected' }
+    { label: "Fitness Tracker", value: "Connected", status: "connected" },
+    { label: "Smart Scale", value: "Not Linked", status: "disconnected" },
   ];
 
   const privacySettings = [
-    { label: 'Data Sharing', value: 'Enabled', status: 'enabled' },
-    { label: 'Location Services', value: 'Disabled', status: 'disabled' }
+    { label: "Data Sharing", value: "Enabled", status: "enabled" },
+    { label: "Location Services", value: "Disabled", status: "disabled" },
   ];
 
   const appSettings = [
-    { label: 'Offline Mode', status: false },
-    { label: 'Notifications', status: true }
+    { label: "Offline Mode", status: false },
+    { label: "Notifications", status: true },
   ];
 
   return (
@@ -59,7 +59,7 @@ export default function Profile() {
             <div className="w-1 h-3 bg-gray-300 rounded-full"></div>
           </div>
           <svg className="w-6 h-6 ml-2" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M2 16h20v2H2zm1.5-5L12 7l8.5 4v2H12v2h8.5v2H3.5z"/>
+            <path d="M2 16h20v2H2zm1.5-5L12 7l8.5 4v2H12v2h8.5v2H3.5z" />
           </svg>
           <div className="w-6 h-3 bg-gray-900 rounded-sm ml-1"></div>
         </div>
@@ -88,19 +88,28 @@ export default function Profile() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-600">Daily Calorie Goal</span>
-              <span className="text-sm font-medium">{user.dailyCalorieGoal} / {user.totalCalorieGoal} kcal</span>
+              <span className="text-sm font-medium">
+                {user.dailyCalorieGoal} / {user.totalCalorieGoal} kcal
+              </span>
             </div>
             <Progress value={user.progressPercentage} className="h-2" />
-            <p className="text-xs text-gray-500">You are {user.progressPercentage}% towards your goal today.</p>
+            <p className="text-xs text-gray-500">
+              You are {user.progressPercentage}% towards your goal today.
+            </p>
           </div>
         </div>
 
         {/* Personal Info */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Personal Info</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Personal Info
+          </h3>
           <div className="space-y-3">
             {personalInfo.map((item) => (
-              <div key={item.label} className="flex items-center justify-between">
+              <div
+                key={item.label}
+                className="flex items-center justify-between"
+              >
                 <span className="text-gray-600">{item.label}</span>
                 <span className="text-gray-900 font-medium">{item.value}</span>
               </div>
@@ -113,7 +122,10 @@ export default function Profile() {
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Goals</h3>
           <div className="space-y-3">
             {goals.map((item) => (
-              <div key={item.label} className="flex items-center justify-between">
+              <div
+                key={item.label}
+                className="flex items-center justify-between"
+              >
                 <span className="text-gray-600">{item.label}</span>
                 <span className="text-gray-900 font-medium">{item.value}</span>
               </div>
@@ -123,10 +135,15 @@ export default function Profile() {
 
         {/* Dietary Preferences */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Dietary Preferences</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Dietary Preferences
+          </h3>
           <div className="space-y-3">
             {dietaryPreferences.map((item) => (
-              <div key={item.label} className="flex items-center justify-between">
+              <div
+                key={item.label}
+                className="flex items-center justify-between"
+              >
                 <span className="text-gray-600">{item.label}</span>
                 <span className="text-gray-900 font-medium">{item.value}</span>
               </div>
@@ -136,12 +153,19 @@ export default function Profile() {
 
         {/* Linked Devices */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Linked Devices</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Linked Devices
+          </h3>
           <div className="space-y-3">
             {linkedDevices.map((item) => (
-              <div key={item.label} className="flex items-center justify-between">
+              <div
+                key={item.label}
+                className="flex items-center justify-between"
+              >
                 <span className="text-gray-600">{item.label}</span>
-                <span className={`font-medium ${item.status === 'connected' ? 'text-green-600' : 'text-gray-500'}`}>
+                <span
+                  className={`font-medium ${item.status === "connected" ? "text-green-600" : "text-gray-500"}`}
+                >
                   {item.value}
                 </span>
               </div>
@@ -151,12 +175,19 @@ export default function Profile() {
 
         {/* Privacy Settings */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Privacy Settings</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Privacy Settings
+          </h3>
           <div className="space-y-3">
             {privacySettings.map((item) => (
-              <div key={item.label} className="flex items-center justify-between">
+              <div
+                key={item.label}
+                className="flex items-center justify-between"
+              >
                 <span className="text-gray-600">{item.label}</span>
-                <span className={`font-medium ${item.status === 'enabled' ? 'text-green-600' : 'text-gray-500'}`}>
+                <span
+                  className={`font-medium ${item.status === "enabled" ? "text-green-600" : "text-gray-500"}`}
+                >
                   {item.value}
                 </span>
               </div>
@@ -166,13 +197,22 @@ export default function Profile() {
 
         {/* App Settings */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">App Settings</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            App Settings
+          </h3>
           <div className="space-y-3">
             {appSettings.map((item) => (
-              <div key={item.label} className="flex items-center justify-between">
+              <div
+                key={item.label}
+                className="flex items-center justify-between"
+              >
                 <span className="text-gray-600">{item.label}</span>
-                <div className={`w-12 h-6 rounded-full relative transition-colors ${item.status ? 'bg-primary' : 'bg-gray-300'}`}>
-                  <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${item.status ? 'translate-x-7' : 'translate-x-1'}`}></div>
+                <div
+                  className={`w-12 h-6 rounded-full relative transition-colors ${item.status ? "bg-primary" : "bg-gray-300"}`}
+                >
+                  <div
+                    className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${item.status ? "translate-x-7" : "translate-x-1"}`}
+                  ></div>
                 </div>
               </div>
             ))}
