@@ -18,7 +18,13 @@ export default function FoodSearch() {
       unit: '100g',
       category: 'Fruits',
       image: '🍎',
-      macros: { protein: 0.3, carbs: 14, fat: 0.2 }
+      macros: { protein: 0.3, carbs: 14, fat: 0.2 },
+      rating: 4.8,
+      reviews: 2847,
+      verified: true,
+      nutrition: { fiber: 2.4, sugar: 10.4, sodium: 1, potassium: 107 },
+      benefits: ['Heart Health', 'Weight Management', 'Digestive Health'],
+      barcode: '123456789012'
     },
     {
       id: 2,
@@ -27,16 +33,28 @@ export default function FoodSearch() {
       unit: '100g',
       category: 'Grains',
       image: '🥣',
-      macros: { protein: 2.4, carbs: 12, fat: 1.4 }
+      macros: { protein: 2.4, carbs: 12, fat: 1.4 },
+      rating: 4.5,
+      reviews: 1923,
+      verified: true,
+      nutrition: { fiber: 1.7, sugar: 0.9, sodium: 49, potassium: 61 },
+      benefits: ['Energy Boost', 'Heart Health', 'Blood Sugar Control'],
+      barcode: '123456789013'
     },
     {
       id: 3,
-      name: 'Grilled Chicken',
+      name: 'Grilled Chicken Breast',
       calories: 165,
       unit: '100g',
       category: 'Proteins',
       image: '🍗',
-      macros: { protein: 31, carbs: 0, fat: 3.6 }
+      macros: { protein: 31, carbs: 0, fat: 3.6 },
+      rating: 4.9,
+      reviews: 5672,
+      verified: true,
+      nutrition: { fiber: 0, sugar: 0, sodium: 74, potassium: 256 },
+      benefits: ['Muscle Building', 'Weight Loss', 'High Protein'],
+      barcode: '123456789014'
     },
     {
       id: 4,
@@ -45,7 +63,13 @@ export default function FoodSearch() {
       unit: '100g',
       category: 'Dairy',
       image: '🥛',
-      macros: { protein: 10, carbs: 3.6, fat: 0.4 }
+      macros: { protein: 10, carbs: 3.6, fat: 0.4 },
+      rating: 4.7,
+      reviews: 3458,
+      verified: true,
+      nutrition: { fiber: 0, sugar: 3.6, sodium: 36, potassium: 141 },
+      benefits: ['Probiotics', 'Bone Health', 'Protein Rich'],
+      barcode: '123456789015'
     },
     {
       id: 5,
@@ -54,25 +78,43 @@ export default function FoodSearch() {
       unit: '100g',
       category: 'Vegetables',
       image: '🥦',
-      macros: { protein: 2.8, carbs: 7, fat: 0.4 }
+      macros: { protein: 2.8, carbs: 7, fat: 0.4 },
+      rating: 4.3,
+      reviews: 1876,
+      verified: true,
+      nutrition: { fiber: 2.6, sugar: 1.5, sodium: 33, potassium: 316 },
+      benefits: ['Vitamin C', 'Antioxidants', 'Cancer Fighting'],
+      barcode: '123456789016'
     },
     {
       id: 6,
-      name: 'Nutty Energy Bar',
-      calories: 450,
+      name: 'Almonds (Raw)',
+      calories: 579,
       unit: '100g',
-      category: 'Snacks',
-      image: '🍫',
-      macros: { protein: 15, carbs: 35, fat: 28 }
+      category: 'Nuts',
+      image: '🥜',
+      macros: { protein: 21.2, carbs: 21.6, fat: 49.9 },
+      rating: 4.8,
+      reviews: 4293,
+      verified: true,
+      nutrition: { fiber: 12.5, sugar: 4.4, sodium: 1, potassium: 733 },
+      benefits: ['Heart Health', 'Brain Function', 'Healthy Fats'],
+      barcode: '123456789017'
     },
     {
       id: 7,
-      name: 'Fresh Orange Juice',
-      calories: 47,
+      name: 'Quinoa (Cooked)',
+      calories: 120,
       unit: '100g',
-      category: 'Beverages',
-      image: '🍊',
-      macros: { protein: 0.7, carbs: 11, fat: 0.2 }
+      category: 'Grains',
+      image: '🌾',
+      macros: { protein: 4.4, carbs: 22, fat: 1.9 },
+      rating: 4.6,
+      reviews: 2956,
+      verified: true,
+      nutrition: { fiber: 2.8, sugar: 0.9, sodium: 7, potassium: 172 },
+      benefits: ['Complete Protein', 'Gluten Free', 'Mineral Rich'],
+      barcode: '123456789018'
     },
     {
       id: 8,
@@ -81,25 +123,73 @@ export default function FoodSearch() {
       unit: '100g',
       category: 'Proteins',
       image: '🐟',
-      macros: { protein: 25, carbs: 0, fat: 12 }
+      macros: { protein: 25, carbs: 0, fat: 12 },
+      rating: 4.9,
+      reviews: 3874,
+      verified: true,
+      nutrition: { fiber: 0, sugar: 0, sodium: 59, potassium: 363 },
+      benefits: ['Omega-3', 'Heart Health', 'Brain Function'],
+      barcode: '123456789019'
     },
     {
       id: 9,
-      name: 'Whole Wheat Bread',
-      calories: 265,
+      name: 'Avocado',
+      calories: 160,
       unit: '100g',
-      category: 'Grains',
-      image: '🍞',
-      macros: { protein: 9, carbs: 43, fat: 4.2 }
+      category: 'Fruits',
+      image: '🥑',
+      macros: { protein: 2, carbs: 9, fat: 15 },
+      rating: 4.7,
+      reviews: 5629,
+      verified: true,
+      nutrition: { fiber: 7, sugar: 0.7, sodium: 7, potassium: 485 },
+      benefits: ['Healthy Fats', 'Fiber Rich', 'Potassium'],
+      barcode: '123456789020'
     },
     {
       id: 10,
-      name: 'Chocolate Chip Cookie',
-      calories: 488,
+      name: 'Sweet Potato (Baked)',
+      calories: 90,
       unit: '100g',
-      category: 'Snacks',
-      image: '🍪',
-      macros: { protein: 5.4, carbs: 68, fat: 23 }
+      category: 'Vegetables',
+      image: '🍠',
+      macros: { protein: 2, carbs: 21, fat: 0.1 },
+      rating: 4.5,
+      reviews: 2847,
+      verified: true,
+      nutrition: { fiber: 3.3, sugar: 6.8, sodium: 6, potassium: 475 },
+      benefits: ['Vitamin A', 'Complex Carbs', 'Antioxidants'],
+      barcode: '123456789021'
+    },
+    {
+      id: 11,
+      name: 'Spinach (Fresh)',
+      calories: 23,
+      unit: '100g',
+      category: 'Vegetables',
+      image: '🥬',
+      macros: { protein: 2.9, carbs: 3.6, fat: 0.4 },
+      rating: 4.4,
+      reviews: 1934,
+      verified: true,
+      nutrition: { fiber: 2.2, sugar: 0.4, sodium: 79, potassium: 558 },
+      benefits: ['Iron Rich', 'Folate', 'Vitamin K'],
+      barcode: '123456789022'
+    },
+    {
+      id: 12,
+      name: 'Blueberries',
+      calories: 57,
+      unit: '100g',
+      category: 'Fruits',
+      image: '🫐',
+      macros: { protein: 0.7, carbs: 14, fat: 0.3 },
+      rating: 4.9,
+      reviews: 4586,
+      verified: true,
+      nutrition: { fiber: 2.4, sugar: 10, sodium: 1, potassium: 77 },
+      benefits: ['Antioxidants', 'Brain Health', 'Anti-Aging'],
+      barcode: '123456789023'
     }
   ];
 
