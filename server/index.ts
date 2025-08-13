@@ -22,5 +22,12 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // AI-powered health tracking endpoints
+  app.post("/api/ai-assistant", handleAIAssistant);
+  app.post("/api/food-scan", handleFoodScan);
+  app.post("/api/quick-scan", handleQuickScan);
+  app.post("/api/mood-recommendations", handleMoodRecommendations);
+  app.get("/api/moods", handleGetMoods);
+
   return app;
 }
