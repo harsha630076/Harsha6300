@@ -16,6 +16,7 @@ import Recommendations from "./pages/Recommendations";
 import Log from "./pages/Log";
 import Insights from "./pages/Insights";
 import Profile from "./pages/Profile";
+import FoodSearch from "./pages/FoodSearch";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
