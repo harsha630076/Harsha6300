@@ -1,0 +1,86 @@
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  passwordHash  String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  profile       Profile?
+  moods         Mood[]
+  meals         Meal[]
+  chats         ChatMessage[]
+  recommendations Recommendation[]
+}
+
+model Profile {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id])
+  name         String?
+  age          Int?
+  gender       String?
+  heightCm     Int?
+  weightKg     Float?
+  activity     String? // sedentary, light, moderate, active
+  goals        Json?   // weight loss, maintenance, etc
+  preferences  Json?   // diet type, allergies
+  conditions   Json?   // medical conditions
+}
+
+model Mood {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  category  String   // stressed, low_energy, sad, excited, anxious, happy
+  note      String?
+  createdAt DateTime @default(now())
+}
+
+model Meal {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  time       DateTime @default(now())
+  totalKcal  Int?
+  items      MealItem[]
+}
+
+model MealItem {
+  id           String  @id @default(cuid())
+  mealId       String
+  meal         Meal    @relation(fields: [mealId], references: [id])
+  name         String
+  quantity     Float   // grams
+  kcal         Float?
+  protein      Float?
+  carbs        Float?
+  fat          Float?
+  meta         Json?
+}
+
+model Recommendation {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  scope     String   // immediate | meal_planning | lifestyle | warning
+  content   Json
+  createdAt DateTime @default(now())
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  role      String   // user | assistant | system
+  content   String
+  createdAt DateTime @default(now())
+}

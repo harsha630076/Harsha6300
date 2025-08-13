@@ -1,10 +1,47 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import BottomNav from "@/components/BottomNav";
-import { Bell, Edit3, ChevronRight, Camera } from "lucide-react";
-import { Link } from "react-router-dom";
+import { BottomNav } from "@/components/BottomNav";
+import { Camera, Plus, TrendingUp, Heart, Brain, Utensils } from "lucide-react";
+import { useEffect, useState } from "react";
+import { apiClient } from "@/api/client";
 
 export default function Dashboard() {
+  const [user, setUser] = useState<any>(null);
+  const [todayMeals, setTodayMeals] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [userData, mealsData] = await Promise.all([
+          apiClient.getMe(),
+          apiClient.getMealsForDay(new Date().toISOString().split('T')[0])
+        ]);
+        setUser(userData);
+        setTodayMeals(mealsData);
+      } catch (error) {
+        console.error('Failed to load dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  const totalCalories = todayMeals.reduce((sum, meal) => sum + (meal.totalKcal || 0), 0);
+  const targetCalories = 2000; // This could come from user profile
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">Loading...</div>
+      </div>
+    );
+  }
+
   const caloriesConsumed = 1850;
   const caloriesGoal = 2200;
   const caloriesRemaining = caloriesGoal - caloriesConsumed;
@@ -86,30 +123,26 @@ export default function Dashboard() {
 
       {/* Greeting */}
       <div className="px-6 mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Hi, Alex</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Hi, {user?.name || 'User'}</h2>
       </div>
 
       {/* Calorie Progress */}
       <div className="px-6 mb-8">
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Calories Remaining</span>
-            <span className="text-sm font-medium text-gray-900">
-              {caloriesRemaining} kcal
-            </span>
-          </div>
-
-          <div className="flex items-end gap-2 mb-4">
-            <span className="text-3xl font-bold text-gray-900">
-              {caloriesConsumed}
-            </span>
-            <span className="text-lg text-gray-600 mb-1">
-              / {caloriesGoal} kcal
-            </span>
-          </div>
-
-          <Progress value={progressPercentage} className="h-3 bg-gray-100" />
-        </div>
+        <Card className="rounded-2xl p-6 shadow-sm border border-gray-100">
+          <CardHeader className="p-0 mb-2">
+            <CardDescription className="text-sm text-gray-600">Calories Remaining</CardDescription>
+            <CardTitle className="text-sm font-medium text-gray-900">
+              {(targetCalories - totalCalories).toLocaleString()} kcal
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="text-2xl font-bold">{totalCalories.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">
+              of {targetCalories.toLocaleString()} calories
+            </p>
+            <Progress value={(totalCalories / targetCalories) * 100} className="mt-2" />
+          </CardContent>
+        </Card>
       </div>
 
       {/* Macro Breakdown */}
@@ -141,19 +174,19 @@ export default function Dashboard() {
           Daily Meals
         </h3>
         <div className="space-y-3">
-          {dailyMeals.map((meal) => (
+          {todayMeals.map((meal) => (
             <div
               key={meal.id}
               className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex items-center gap-4"
             >
               <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-2xl">
-                {meal.image}
+                {meal.icon || "🍲"}
               </div>
               <div className="flex-1">
                 <h4 className="font-medium text-gray-900 text-sm">
                   {meal.name}
                 </h4>
-                <p className="text-sm text-gray-600">{meal.calories} kcal</p>
+                <p className="text-sm text-gray-600">{meal.totalKcal} kcal</p>
               </div>
               <Edit3 className="w-5 h-5 text-primary" />
             </div>
