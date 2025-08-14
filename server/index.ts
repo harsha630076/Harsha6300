@@ -10,6 +10,21 @@ import {
   handleGetMoods,
 } from "./routes/mood-recommendations";
 import { initializeDatabase } from "./database/connection";
+import {
+  handleCreateUser,
+  handleGetUser,
+  handleUpdateUser,
+  handleGetFoods,
+  handleGetFood,
+  handleCreateFoodLog,
+  handleGetFoodLogs,
+  handleGetWeeklyStats,
+  handleGetNotifications,
+  handleMarkNotificationRead,
+  handleMarkAllNotificationsRead,
+  handleExportUserData,
+  handleDatabaseHealth
+} from "./routes/database-api";
 
 export function createServer() {
   const app = express();
