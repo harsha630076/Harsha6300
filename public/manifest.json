@@ -1,0 +1,173 @@
+{
+  "name": "QuickCal AI - Health Tracker",
+  "short_name": "QuickCal AI",
+  "description": "AI-powered nutrition tracking and health management app with food scanning and mood-based recommendations",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#22c55e",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["health", "lifestyle", "nutrition", "fitness"],
+  "screenshots": [
+    {
+      "src": "/screenshots/dashboard-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dashboard view showing daily nutrition tracking"
+    },
+    {
+      "src": "/screenshots/ai-scan-mobile.png", 
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "AI food scanning interface"
+    },
+    {
+      "src": "/screenshots/dashboard-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png", 
+      "form_factor": "wide",
+      "label": "Desktop dashboard view"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "AI Food Scan",
+      "short_name": "Scan",
+      "description": "Quickly scan food with AI camera",
+      "url": "/scan",
+      "icons": [
+        {
+          "src": "/icons/scan-shortcut.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Log Food",
+      "short_name": "Log",
+      "description": "Manual food logging",
+      "url": "/log",
+      "icons": [
+        {
+          "src": "/icons/log-shortcut.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "AI Assistant",
+      "short_name": "Assistant",
+      "description": "Get nutrition advice from AI",
+      "url": "/ai-assistant",
+      "icons": [
+        {
+          "src": "/icons/assistant-shortcut.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.quickcalai.app",
+      "id": "com.quickcalai.app"
+    },
+    {
+      "platform": "itunes", 
+      "url": "https://apps.apple.com/app/quickcal-ai/id123456789"
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+quickcalai",
+      "url": "/scan?food=%s"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/scan",
+      "accept": {
+        "image/*": [".jpg", ".jpeg", ".png", ".webp"]
+      }
+    }
+  ],
+  "share_target": {
+    "action": "/scan",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "image",
+          "accept": ["image/*"]
+        }
+      ]
+    }
+  }
+}
