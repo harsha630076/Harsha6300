@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import { mkdirSync } from "fs";
 import { handleDemo } from "./routes/demo";
 import { handleAIAssistant } from "./routes/ai-assistant";
 import { handleFoodScan, handleQuickScan } from "./routes/food-scan";
@@ -8,6 +9,7 @@ import {
   handleMoodRecommendations,
   handleGetMoods,
 } from "./routes/mood-recommendations";
+import { initializeDatabase } from "./database/connection";
 
 export function createServer() {
   const app = express();
