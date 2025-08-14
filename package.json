@@ -43,7 +43,6 @@
     "test": "vitest --run",
     "format.fix": "prettier --write .",
     "typecheck": "tsc",
-<<<<<<< HEAD
     "mobile:init": "npx cap init 'QuickCal AI' 'com.quickcalai.app'",
     "mobile:add-android": "npx cap add android",
     "mobile:add-ios": "npx cap add ios",
@@ -57,10 +56,8 @@
     "db:init": "node -e \"require('./server/database/connection.ts').initializeDatabase()\"",
     "db:seed": "node scripts/seed-database.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "icons:generate": "node scripts/generate-icons.js"
-=======
+    "icons:generate": "node scripts/generate-icons.js",
     "postinstall": "prisma generate --schema=server/prisma/schema.prisma"
->>>>>>> 683d107e2757000be2e558aaec410b6522c9f6b2
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
@@ -70,10 +67,6 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
-<<<<<<< HEAD
-    "zod": "^3.25.76",
-    "better-sqlite3": "^12.2.0"
-=======
     "express-rate-limit": "^7.4.1",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
@@ -82,8 +75,8 @@
     "prisma": "^5.22.0",
     "swagger-ui-express": "^5.0.1",
     "yaml": "^2.6.1",
-    "zod": "^3.25.76"
->>>>>>> 683d107e2757000be2e558aaec410b6522c9f6b2
+    "zod": "^3.25.76",
+    "better-sqlite3": "^12.2.0"
   },
   "devDependencies": {
     "@hookform/resolvers": "^5.2.1",
