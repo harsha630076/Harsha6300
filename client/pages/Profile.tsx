@@ -220,14 +220,22 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Export Data */}
-        <Button
-          variant="outline"
-          className="w-full h-14 border-2 border-primary text-primary hover:bg-primary/5 rounded-2xl text-lg font-medium flex items-center justify-center gap-3"
-        >
-          <Download className="w-5 h-5" />
-          Export My Data
-        </Button>
+        {/* Download Options */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-gray-900">Download & Install</h3>
+
+          {/* PWA Install Button */}
+          <PWAInstallButton />
+
+          {/* Data Export */}
+          <DownloadButton userId={1} variant="data" />
+
+          {/* Mobile App Download */}
+          <DownloadButton variant="app" />
+
+          {/* Health Report */}
+          <DownloadButton variant="report" />
+        </div>
       </div>
 
       <BottomNav />
