@@ -1,9 +1,24 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import BottomNav from "@/components/BottomNav";
-import { Camera, Plus, TrendingUp, Heart, Brain, Utensils, Bell, ChevronRight } from "lucide-react";
+import {
+  Camera,
+  Plus,
+  TrendingUp,
+  Heart,
+  Brain,
+  Utensils,
+  Bell,
+  ChevronRight,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiClient } from "@/api/client";
@@ -18,21 +33,23 @@ export default function Dashboard() {
       try {
         const [userData, mealsData] = await Promise.all([
           apiClient.getMe().catch(() => ({
-            id: '1',
-            email: 'user@example.com',
-            profile: { name: 'Alex', calorieGoal: 2200 }
+            id: "1",
+            email: "user@example.com",
+            profile: { name: "Alex", calorieGoal: 2200 },
           })),
-          apiClient.getMealsForDay(new Date().toISOString().split('T')[0]).catch(() => [])
+          apiClient
+            .getMealsForDay(new Date().toISOString().split("T")[0])
+            .catch(() => []),
         ]);
         setUser(userData);
         setTodayMeals(mealsData);
       } catch (error) {
-        console.error('Failed to load dashboard data:', error);
+        console.error("Failed to load dashboard data:", error);
         // Set fallback data
         setUser({
-          id: '1',
-          email: 'user@example.com',
-          profile: { name: 'Alex', calorieGoal: 2200 }
+          id: "1",
+          email: "user@example.com",
+          profile: { name: "Alex", calorieGoal: 2200 },
         });
         setTodayMeals([]);
       } finally {
@@ -43,7 +60,10 @@ export default function Dashboard() {
     loadData();
   }, []);
 
-  const totalCalories = todayMeals.reduce((sum, meal) => sum + (meal.totalKcal || 0), 0);
+  const totalCalories = todayMeals.reduce(
+    (sum, meal) => sum + (meal.totalKcal || 0),
+    0,
+  );
   const targetCalories = 2000; // This could come from user profile
 
   if (loading) {
@@ -135,24 +155,33 @@ export default function Dashboard() {
 
       {/* Greeting */}
       <div className="px-6 mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Hi, {user?.name || 'User'}</h2>
+        <h2 className="text-2xl font-bold text-gray-900">
+          Hi, {user?.name || "User"}
+        </h2>
       </div>
 
       {/* Calorie Progress */}
       <div className="px-6 mb-8">
         <Card className="rounded-2xl p-6 shadow-sm border border-gray-100">
           <CardHeader className="p-0 mb-2">
-            <CardDescription className="text-sm text-gray-600">Calories Remaining</CardDescription>
+            <CardDescription className="text-sm text-gray-600">
+              Calories Remaining
+            </CardDescription>
             <CardTitle className="text-sm font-medium text-gray-900">
               {(targetCalories - totalCalories).toLocaleString()} kcal
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{totalCalories.toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              {totalCalories.toLocaleString()}
+            </div>
             <p className="text-xs text-muted-foreground">
               of {targetCalories.toLocaleString()} calories
             </p>
-            <Progress value={(totalCalories / targetCalories) * 100} className="mt-2" />
+            <Progress
+              value={(totalCalories / targetCalories) * 100}
+              className="mt-2"
+            />
           </CardContent>
         </Card>
       </div>
