@@ -14,6 +14,21 @@ import { initializeDatabase } from "./database/connection";
 export function createServer() {
   const app = express();
 
+  // Ensure data directory exists
+  try {
+    mkdirSync('data', { recursive: true });
+  } catch (error) {
+    // Directory might already exist
+  }
+
+  // Initialize database
+  try {
+    initializeDatabase();
+    console.log('✅ Database connection established');
+  } catch (error) {
+    console.error('❌ Database initialization failed:', error);
+  }
+
   // Middleware
   app.use(cors());
   app.use(express.json());
