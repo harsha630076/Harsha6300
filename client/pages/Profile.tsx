@@ -1,6 +1,7 @@
 import BottomNav from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import DownloadButton, { PWAInstallButton } from "@/components/DownloadButton";
 import { Bell, Download } from "lucide-react";
 
 export default function Profile() {
