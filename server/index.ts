@@ -64,5 +64,28 @@ export function createServer() {
   app.post("/api/mood-recommendations", handleMoodRecommendations);
   app.get("/api/moods", handleGetMoods);
 
+  // Database API endpoints
+  app.get("/api/health", handleDatabaseHealth);
+
+  // User management
+  app.post("/api/users", handleCreateUser);
+  app.get("/api/users/:id", handleGetUser);
+  app.put("/api/users/:id", handleUpdateUser);
+  app.get("/api/users/:userId/export", handleExportUserData);
+
+  // Food database
+  app.get("/api/foods", handleGetFoods);
+  app.get("/api/foods/:id", handleGetFood);
+
+  // Food logging
+  app.post("/api/food-logs", handleCreateFoodLog);
+  app.get("/api/food-logs", handleGetFoodLogs);
+  app.get("/api/users/:userId/weekly-stats", handleGetWeeklyStats);
+
+  // Notifications
+  app.get("/api/users/:userId/notifications", handleGetNotifications);
+  app.put("/api/notifications/:id/read", handleMarkNotificationRead);
+  app.put("/api/users/:userId/notifications/read-all", handleMarkAllNotificationsRead);
+
   return app;
 }
