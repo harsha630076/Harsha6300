@@ -20,7 +20,7 @@
       "label": "Dashboard view showing daily nutrition tracking"
     },
     {
-      "src": "/screenshots/ai-scan-mobile.png", 
+      "src": "/screenshots/ai-scan-mobile.png",
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
@@ -29,7 +29,7 @@
     {
       "src": "/screenshots/dashboard-desktop.png",
       "sizes": "1280x720",
-      "type": "image/png", 
+      "type": "image/png",
       "form_factor": "wide",
       "label": "Desktop dashboard view"
     }
@@ -129,7 +129,7 @@
       "id": "com.quickcalai.app"
     },
     {
-      "platform": "itunes", 
+      "platform": "itunes",
       "url": "https://apps.apple.com/app/quickcal-ai/id123456789"
     }
   ],

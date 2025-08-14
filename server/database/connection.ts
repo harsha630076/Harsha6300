@@ -1,6 +1,6 @@
-import Database from 'better-sqlite3';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import Database from "better-sqlite3";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 // Database connection
 let db: Database.Database;
@@ -8,27 +8,29 @@ let db: Database.Database;
 export function initializeDatabase() {
   try {
     // Create or connect to SQLite database
-    db = new Database('data/health_tracker.db');
-    
+    db = new Database("data/health_tracker.db");
+
     // Enable foreign keys
-    db.exec('PRAGMA foreign_keys = ON');
-    
+    db.exec("PRAGMA foreign_keys = ON");
+
     // Read and execute schema
-    const schemaPath = join(__dirname, 'schema.sql');
-    const schema = readFileSync(schemaPath, 'utf8');
+    const schemaPath = join(__dirname, "schema.sql");
+    const schema = readFileSync(schemaPath, "utf8");
     db.exec(schema);
-    
-    console.log('✅ Database initialized successfully');
+
+    console.log("✅ Database initialized successfully");
     return db;
   } catch (error) {
-    console.error('❌ Database initialization failed:', error);
+    console.error("❌ Database initialization failed:", error);
     throw error;
   }
 }
 
 export function getDatabase(): Database.Database {
   if (!db) {
-    throw new Error('Database not initialized. Call initializeDatabase() first.');
+    throw new Error(
+      "Database not initialized. Call initializeDatabase() first.",
+    );
   }
   return db;
 }
@@ -125,51 +127,57 @@ export const UserService = {
       user.activity_level,
       user.goal,
       user.diet_type,
-      user.calorie_goal || 2200
+      user.calorie_goal || 2200,
     );
     return { ...user, id: Number(result.lastInsertRowid) };
   },
 
   findByEmail: (email: string): User | undefined => {
-    const stmt = db.prepare('SELECT * FROM users WHERE email = ?');
+    const stmt = db.prepare("SELECT * FROM users WHERE email = ?");
     return stmt.get(email) as User | undefined;
   },
 
   findById: (id: number): User | undefined => {
-    const stmt = db.prepare('SELECT * FROM users WHERE id = ?');
+    const stmt = db.prepare("SELECT * FROM users WHERE id = ?");
     return stmt.get(id) as User | undefined;
   },
 
   update: (id: number, updates: Partial<User>): void => {
-    const fields = Object.keys(updates).map(key => `${key} = ?`).join(', ');
+    const fields = Object.keys(updates)
+      .map((key) => `${key} = ?`)
+      .join(", ");
     const values = Object.values(updates);
-    const stmt = db.prepare(`UPDATE users SET ${fields}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`);
+    const stmt = db.prepare(
+      `UPDATE users SET ${fields}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
+    );
     stmt.run(...values, id);
-  }
+  },
 };
 
 export const FoodService = {
   getAll: (category?: string): FoodItem[] => {
-    let query = 'SELECT * FROM food_items';
+    let query = "SELECT * FROM food_items";
     let params: any[] = [];
-    
-    if (category && category !== 'All') {
-      query += ' WHERE category = ?';
+
+    if (category && category !== "All") {
+      query += " WHERE category = ?";
       params.push(category);
     }
-    
-    query += ' ORDER BY name ASC';
+
+    query += " ORDER BY name ASC";
     const stmt = db.prepare(query);
     return stmt.all(...params) as FoodItem[];
   },
 
   search: (searchTerm: string): FoodItem[] => {
-    const stmt = db.prepare('SELECT * FROM food_items WHERE name LIKE ? ORDER BY rating DESC LIMIT 20');
+    const stmt = db.prepare(
+      "SELECT * FROM food_items WHERE name LIKE ? ORDER BY rating DESC LIMIT 20",
+    );
     return stmt.all(`%${searchTerm}%`) as FoodItem[];
   },
 
   findById: (id: number): FoodItem | undefined => {
-    const stmt = db.prepare('SELECT * FROM food_items WHERE id = ?');
+    const stmt = db.prepare("SELECT * FROM food_items WHERE id = ?");
     return stmt.get(id) as FoodItem | undefined;
   },
 
@@ -188,11 +196,11 @@ export const FoodService = {
       food.verified || false,
       food.rating || 0,
       food.review_count || 0,
-      food.benefits || '[]',
-      food.barcode
+      food.benefits || "[]",
+      food.barcode,
     );
     return { ...food, id: Number(result.lastInsertRowid) };
-  }
+  },
 };
 
 export const FoodLogService = {
@@ -206,9 +214,9 @@ export const FoodLogService = {
       log.food_item_id,
       log.meal_type,
       log.portion_grams || 100,
-      log.scan_method || 'manual',
+      log.scan_method || "manual",
       log.accuracy_percentage,
-      log.notes
+      log.notes,
     );
     return { ...log, id: Number(result.lastInsertRowid) };
   },
@@ -223,11 +231,11 @@ export const FoodLogService = {
     const params: any[] = [userId];
 
     if (date) {
-      query += ' AND DATE(fl.logged_at) = ?';
+      query += " AND DATE(fl.logged_at) = ?";
       params.push(date);
     }
 
-    query += ' ORDER BY fl.logged_at DESC';
+    query += " ORDER BY fl.logged_at DESC";
     const stmt = db.prepare(query);
     return stmt.all(...params) as any[];
   },
@@ -247,7 +255,7 @@ export const FoodLogService = {
       ORDER BY date DESC
     `);
     return stmt.all(userId);
-  }
+  },
 };
 
 export const NotificationService = {
@@ -261,31 +269,35 @@ export const NotificationService = {
       notification.type,
       notification.title,
       notification.message,
-      notification.action_url
+      notification.action_url,
     );
     return { ...notification, id: Number(result.lastInsertRowid) };
   },
 
   getByUser: (userId: number, unreadOnly = false): Notification[] => {
-    let query = 'SELECT * FROM notifications WHERE user_id = ?';
+    let query = "SELECT * FROM notifications WHERE user_id = ?";
     if (unreadOnly) {
-      query += ' AND read_status = FALSE';
+      query += " AND read_status = FALSE";
     }
-    query += ' ORDER BY created_at DESC';
-    
+    query += " ORDER BY created_at DESC";
+
     const stmt = db.prepare(query);
     return stmt.all(userId) as Notification[];
   },
 
   markAsRead: (id: number): void => {
-    const stmt = db.prepare('UPDATE notifications SET read_status = TRUE WHERE id = ?');
+    const stmt = db.prepare(
+      "UPDATE notifications SET read_status = TRUE WHERE id = ?",
+    );
     stmt.run(id);
   },
 
   markAllAsRead: (userId: number): void => {
-    const stmt = db.prepare('UPDATE notifications SET read_status = TRUE WHERE user_id = ?');
+    const stmt = db.prepare(
+      "UPDATE notifications SET read_status = TRUE WHERE user_id = ?",
+    );
     stmt.run(userId);
-  }
+  },
 };
 
 export default { initializeDatabase, getDatabase };

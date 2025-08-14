@@ -222,7 +222,9 @@ export default function Profile() {
 
         {/* Download Options */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Download & Install</h3>
+          <h3 className="text-lg font-semibold text-gray-900">
+            Download & Install
+          </h3>
 
           {/* PWA Install Button */}
           <PWAInstallButton />

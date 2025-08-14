@@ -5,6 +5,7 @@ This guide explains how to convert your QuickCal AI web app into native mobile a
 ## 🏗️ App Architecture
 
 Your app is now **mobile-ready** with:
+
 - ✅ **Progressive Web App (PWA)** capabilities
 - ✅ **SQLite database** backend with full CRUD operations
 - ✅ **Service Worker** for offline functionality
@@ -17,6 +18,7 @@ Your app is now **mobile-ready** with:
 Capacitor by Ionic is the best way to convert your web app to native mobile apps.
 
 ### Prerequisites
+
 ```bash
 npm install -g @capacitor/cli
 ```
@@ -24,6 +26,7 @@ npm install -g @capacitor/cli
 ### Setup Capacitor
 
 1. **Initialize Capacitor in your project:**
+
 ```bash
 cd your-project-directory
 npm install @capacitor/core
@@ -31,6 +34,7 @@ npx cap init "QuickCal AI" "com.quickcalai.app"
 ```
 
 2. **Add platforms:**
+
 ```bash
 # Add Android platform
 npm install @capacitor/android
@@ -42,16 +46,19 @@ npx cap add ios
 ```
 
 3. **Build your web app:**
+
 ```bash
 npm run build
 ```
 
 4. **Copy files to native platforms:**
+
 ```bash
 npx cap copy
 ```
 
 5. **Open in native IDEs:**
+
 ```bash
 # Open Android Studio
 npx cap open android
@@ -74,6 +81,7 @@ npx cap open ios
 4. **Build APK:**
    - Select `Build` > `Build Bundle(s) / APK(s)` > `Build APK(s)`
    - Or use command line:
+
    ```bash
    cd android
    ./gradlew assembleDebug  # For debug APK
@@ -105,17 +113,20 @@ npx cap open ios
 ### Setup Cordova
 
 1. **Install Cordova CLI:**
+
 ```bash
 npm install -g cordova
 ```
 
 2. **Create Cordova project:**
+
 ```bash
 cordova create QuickCalAI com.quickcalai.app "QuickCal AI"
 cd QuickCalAI
 ```
 
 3. **Add platforms:**
+
 ```bash
 cordova platform add android
 cordova platform add ios
@@ -124,6 +135,7 @@ cordova platform add ios
 4. **Copy your built files** to `www/` directory
 
 5. **Build:**
+
 ```bash
 # Build for Android
 cordova build android
@@ -144,16 +156,19 @@ cordova build ios
 ### Bubblewrap (Google)
 
 1. **Install Bubblewrap:**
+
 ```bash
 npm i -g @bubblewrap/cli
 ```
 
 2. **Initialize:**
+
 ```bash
 bubblewrap init --manifest https://yourdomain.com/manifest.json
 ```
 
 3. **Build APK:**
+
 ```bash
 bubblewrap build
 ```
@@ -163,6 +178,7 @@ bubblewrap build
 ### Update Capacitor Config
 
 Create `capacitor.config.json`:
+
 ```json
 {
   "appId": "com.quickcalai.app",
@@ -190,6 +206,7 @@ Create `capacitor.config.json`:
 ### Add Required Permissions
 
 **Android** (`android/app/src/main/AndroidManifest.xml`):
+
 ```xml
 <uses-permission android:name="android.permission.CAMERA" />
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -201,6 +218,7 @@ Create `capacitor.config.json`:
 ```
 
 **iOS** (`ios/App/App/Info.plist`):
+
 ```xml
 <key>NSCameraUsageDescription</key>
 <string>This app needs camera access to scan food items</string>
@@ -213,12 +231,14 @@ Create `capacitor.config.json`:
 ## 📱 Testing Your Mobile App
 
 ### Android Testing
+
 1. Enable Developer Options on Android device
 2. Enable USB Debugging
 3. Connect device via USB
 4. Run: `npx cap run android --target=device`
 
 ### iOS Testing
+
 1. Connect iPhone/iPad via USB
 2. Trust your computer on the device
 3. Run: `npx cap run ios --target=device`
@@ -287,6 +307,7 @@ Create `capacitor.config.json`:
 ## 📊 App Features Status
 
 ✅ **Complete & Mobile-Ready:**
+
 - User authentication & profiles
 - AI food scanning simulation
 - Comprehensive food database with ratings
@@ -299,6 +320,7 @@ Create `capacitor.config.json`:
 - Progressive Web App features
 
 ✅ **Database Features:**
+
 - SQLite backend with full schema
 - User management system
 - Food logging with relationships
@@ -307,6 +329,7 @@ Create `capacitor.config.json`:
 - Data persistence
 
 ✅ **Mobile-Specific Features:**
+
 - Touch-optimized UI
 - Mobile gestures
 - Responsive design
@@ -333,6 +356,7 @@ Your QuickCal AI app is now **fully ready** for mobile deployment! 🎉
 ## 📞 Support
 
 For deployment issues:
+
 - Check Capacitor docs: https://capacitorjs.com/docs
 - Android development: https://developer.android.com/docs
 - iOS development: https://developer.apple.com/documentation/

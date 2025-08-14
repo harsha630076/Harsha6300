@@ -23,7 +23,7 @@ import {
   handleMarkNotificationRead,
   handleMarkAllNotificationsRead,
   handleExportUserData,
-  handleDatabaseHealth
+  handleDatabaseHealth,
 } from "./routes/database-api";
 
 export function createServer() {
@@ -31,7 +31,7 @@ export function createServer() {
 
   // Ensure data directory exists
   try {
-    mkdirSync('data', { recursive: true });
+    mkdirSync("data", { recursive: true });
   } catch (error) {
     // Directory might already exist
   }
@@ -39,9 +39,9 @@ export function createServer() {
   // Initialize database
   try {
     initializeDatabase();
-    console.log('✅ Database connection established');
+    console.log("✅ Database connection established");
   } catch (error) {
-    console.error('❌ Database initialization failed:', error);
+    console.error("❌ Database initialization failed:", error);
   }
 
   // Middleware
@@ -85,7 +85,10 @@ export function createServer() {
   // Notifications
   app.get("/api/users/:userId/notifications", handleGetNotifications);
   app.put("/api/notifications/:id/read", handleMarkNotificationRead);
-  app.put("/api/users/:userId/notifications/read-all", handleMarkAllNotificationsRead);
+  app.put(
+    "/api/users/:userId/notifications/read-all",
+    handleMarkAllNotificationsRead,
+  );
 
   return app;
 }
