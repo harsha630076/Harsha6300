@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { BottomNav } from "@/components/BottomNav";
+import BottomNav from "@/components/BottomNav";
 import { Camera, Plus, TrendingUp, Heart, Brain, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
 import { apiClient } from "@/api/client";
