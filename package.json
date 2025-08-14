@@ -1,10 +1,29 @@
 {
-  "name": "fusion-starter",
+  "name": "quickcal-ai-health-tracker",
   "private": true,
   "type": "module",
+  "version": "1.0.0",
+  "description": "AI-powered nutrition tracking and health management app with food scanning and mood-based recommendations",
+  "author": "QuickCal AI Team",
+  "homepage": "https://quickcalai.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quickcalai/app.git"
+  },
+  "keywords": [
+    "health",
+    "nutrition",
+    "ai",
+    "food-tracking",
+    "mobile-app",
+    "pwa",
+    "fitness",
+    "wellness"
+  ],
   "pkg": {
     "assets": [
-      "dist/spa/*"
+      "dist/spa/*",
+      "data/*"
     ],
     "scripts": [
       "dist/server/**/*.js"
@@ -18,14 +37,27 @@
     "start": "node dist/server/node-build.mjs",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "mobile:init": "npx cap init 'QuickCal AI' 'com.quickcalai.app'",
+    "mobile:add-android": "npx cap add android",
+    "mobile:add-ios": "npx cap add ios",
+    "mobile:build": "npm run build && npx cap copy",
+    "mobile:android": "npx cap open android",
+    "mobile:ios": "npx cap open ios",
+    "mobile:sync": "npx cap sync",
+    "pwa:build": "npm run build && workbox generateSW workbox-config.js",
+    "serve": "npm run build && npm start",
+    "preview": "vite preview",
+    "db:init": "node -e \"require('./server/database/connection.ts').initializeDatabase()\"",
+    "db:seed": "node scripts/seed-database.js",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "icons:generate": "node scripts/generate-icons.js"
   },
   "dependencies": {
-    "@types/better-sqlite3": "^7.6.13",
-    "better-sqlite3": "^12.2.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "better-sqlite3": "^12.2.0"
   },
   "devDependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -67,6 +99,7 @@
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
     "@types/three": "^0.176.0",
+    "@types/better-sqlite3": "^7.6.13",
     "@vitejs/plugin-react-swc": "^4.0.0",
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
@@ -101,5 +134,20 @@
     "vite": "^7.1.2",
     "vitest": "^3.2.4"
   },
-  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748"
+  "peerDependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/ios": "^6.0.0"
+  },
+  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
 }
