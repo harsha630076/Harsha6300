@@ -1,35 +1,82 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
-import { ArrowLeft, Mail } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, Mail, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { authAPI } from "@/api/auth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password });
-    // Simulate successful login and redirect to dashboard
-    setTimeout(() => {
-      window.location.href = "/dashboard";
-    }, 1000);
+    setIsLoading(true);
+    setError("");
+
+    try {
+      await authAPI.login({ email, password });
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOTPLogin = async () => {
+    if (!email) {
+      setError("Please enter your email address");
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      await authAPI.sendOTP(email);
+      navigate("/otp-verification", { state: { email, type: "email" } });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to send OTP");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleLogin = () => {
     console.log("Google login clicked");
-    setTimeout(() => {
-      window.location.href = "/dashboard";
-    }, 1000);
+    // Implement Google OAuth
+    navigate("/dashboard");
   };
 
   const handleAppleLogin = () => {
     console.log("Apple login clicked");
-    setTimeout(() => {
-      window.location.href = "/dashboard";
-    }, 1000);
+    // Implement Apple OAuth
+    navigate("/dashboard");
+  };
+
+  const handleDemoLogin = async () => {
+    setEmail("test@example.com");
+    setPassword("password123");
+    setIsLoading(true);
+    setError("");
+
+    try {
+      await authAPI.login({
+        email: "test@example.com",
+        password: "password123",
+      });
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Demo login failed");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -48,6 +95,25 @@ export default function Login() {
             Login to your account
           </h1>
 
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <p className="text-red-600 text-sm">{error}</p>
+            </div>
+          )}
+
+          {/* Demo Login Info */}
+          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+            <p className="text-blue-700 text-sm">
+              <strong>Demo Login:</strong>
+              <br />
+              Email: test@example.com
+              <br />
+              Password: password123
+              <br />
+              Or create a new account below
+            </p>
+          </div>
+
           <form onSubmit={handleLogin} className="space-y-6 mb-8">
             <div className="space-y-2">
               <Label
@@ -64,6 +130,7 @@ export default function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-12 rounded-xl border-gray-200"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -74,22 +141,70 @@ export default function Login() {
               >
                 Password
               </Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="********"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="h-12 rounded-xl border-gray-200"
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="********"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-12 rounded-xl border-gray-200 pr-12"
+                  required
+                  disabled={isLoading}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 p-0"
+                  onClick={() => setShowPassword(!showPassword)}
+                  disabled={isLoading}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4 text-gray-400" />
+                  ) : (
+                    <Eye className="w-4 h-4 text-gray-400" />
+                  )}
+                </Button>
+              </div>
             </div>
 
+            <div className="flex gap-3">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="flex-1 h-14 bg-primary hover:bg-primary/90 text-white rounded-2xl text-lg font-medium disabled:opacity-50"
+              >
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Signing in...
+                  </div>
+                ) : (
+                  "Login"
+                )}
+              </Button>
+
+              <Button
+                type="button"
+                onClick={handleOTPLogin}
+                disabled={isLoading || !email}
+                variant="outline"
+                className="h-14 px-4 border-2 border-primary text-primary hover:bg-primary/5 rounded-2xl font-medium disabled:opacity-50"
+              >
+                <Mail className="w-5 h-5" />
+              </Button>
+            </div>
+
+            {/* Demo Login Button */}
             <Button
-              type="submit"
-              className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-2xl text-lg font-medium"
+              type="button"
+              onClick={handleDemoLogin}
+              disabled={isLoading}
+              variant="outline"
+              className="w-full h-12 border-2 border-green-200 text-green-700 hover:bg-green-50 rounded-xl font-medium disabled:opacity-50 mt-4"
             >
-              Login
+              Quick Demo Login
             </Button>
           </form>
 
@@ -145,7 +260,7 @@ export default function Login() {
 
           <div className="text-center mt-6">
             <Link
-              to="/signup"
+              to="/register"
               className="text-sm text-gray-600 hover:text-gray-900"
             >
               Don't have an account?{" "}

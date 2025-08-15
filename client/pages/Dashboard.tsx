@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import BottomNav from "@/components/BottomNav";
+import AuthStatusChecker from "@/components/AuthStatusChecker";
 import {
   Camera,
   Plus,
@@ -290,6 +291,7 @@ export default function Dashboard() {
       </div>
 
       <BottomNav />
+      <AuthStatusChecker />
     </div>
   );
 }

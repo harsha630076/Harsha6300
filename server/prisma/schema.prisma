@@ -1,6 +1,5 @@
-
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -31,9 +30,9 @@ model Profile {
   heightCm     Int?
   weightKg     Float?
   activity     String? // sedentary, light, moderate, active
-  goals        Json?   // weight loss, maintenance, etc
-  preferences  Json?   // diet type, allergies
-  conditions   Json?   // medical conditions
+  goals        String?   // weight loss, maintenance, etc (JSON as string)
+  preferences  String?   // diet type, allergies (JSON as string)
+  conditions   String?   // medical conditions (JSON as string)
 }
 
 model Mood {
@@ -64,7 +63,7 @@ model MealItem {
   protein      Float?
   carbs        Float?
   fat          Float?
-  meta         Json?
+  meta         String?
 }
 
 model Recommendation {
@@ -72,7 +71,7 @@ model Recommendation {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   scope     String   // immediate | meal_planning | lifestyle | warning
-  content   Json
+  content   String
   createdAt DateTime @default(now())
 }
 
