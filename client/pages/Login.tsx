@@ -60,6 +60,22 @@ export default function Login() {
     navigate("/dashboard");
   };
 
+  const handleDemoLogin = async () => {
+    setEmail("test@example.com");
+    setPassword("password123");
+    setIsLoading(true);
+    setError("");
+
+    try {
+      await authAPI.login({ email: "test@example.com", password: "password123" });
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Demo login failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
@@ -81,6 +97,16 @@ export default function Login() {
               <p className="text-red-600 text-sm">{error}</p>
             </div>
           )}
+
+          {/* Demo Login Info */}
+          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+            <p className="text-blue-700 text-sm">
+              <strong>Demo Login:</strong><br />
+              Email: test@example.com<br />
+              Password: password123<br />
+              Or create a new account below
+            </p>
+          </div>
 
           <form onSubmit={handleLogin} className="space-y-6 mb-8">
             <div className="space-y-2">
@@ -163,6 +189,17 @@ export default function Login() {
                 <Mail className="w-5 h-5" />
               </Button>
             </div>
+
+            {/* Demo Login Button */}
+            <Button
+              type="button"
+              onClick={handleDemoLogin}
+              disabled={isLoading}
+              variant="outline"
+              className="w-full h-12 border-2 border-green-200 text-green-700 hover:bg-green-50 rounded-xl font-medium disabled:opacity-50 mt-4"
+            >
+              Quick Demo Login
+            </Button>
           </form>
 
           <div className="relative mb-6">
