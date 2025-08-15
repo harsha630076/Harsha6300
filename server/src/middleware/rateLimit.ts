@@ -1,4 +1,3 @@
-
 import rateLimit from 'express-rate-limit';
 
 export const apiLimiter = rateLimit({
@@ -18,4 +17,5 @@ export const authLimiter = rateLimit({
     error: 'Too many authentication attempts, please try again later.'
   },
   skipSuccessfulRequests: true,
+  trustProxy: true, // Fix for proxy configuration
 });
