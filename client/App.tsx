@@ -6,6 +6,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/components/AuthProvider";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Welcome from "./pages/Welcome";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -41,16 +43,16 @@ const App = () => (
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/permissions" element={<Permissions />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/scan" element={<Scan />} />
-          <Route path="/recommendations" element={<Recommendations />} />
-          <Route path="/log" element={<Log />} />
-          <Route path="/insights" element={<Insights />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/food-search" element={<FoodSearch />} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/scan" element={<ProtectedRoute><Scan /></ProtectedRoute>} />
+          <Route path="/recommendations" element={<ProtectedRoute><Recommendations /></ProtectedRoute>} />
+          <Route path="/log" element={<ProtectedRoute><Log /></ProtectedRoute>} />
+          <Route path="/insights" element={<ProtectedRoute><Insights /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/food-search" element={<ProtectedRoute><FoodSearch /></ProtectedRoute>} />
           <Route path="/subscription" element={<Subscription />} />
-          <Route path="/ai-assistant" element={<AIAssistant />} />
-          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/ai-assistant" element={<ProtectedRoute><AIAssistant /></ProtectedRoute>} />
+          <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
           <Route path="/signup-details" element={<SignupDetails />} />
           <Route path="/phone-otp" element={<PhoneOTP />} />
           <Route path="/otp-verification" element={<OTPVerification />} />
