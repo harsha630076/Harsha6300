@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Mail, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { authAPI } from "@/api/auth";
+import LoginStatus from "@/components/LoginStatus";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -263,6 +264,9 @@ export default function Login() {
           </div>
         </div>
       </div>
+
+      {/* Debug Component - Remove in production */}
+      <LoginStatus />
     </div>
   );
 }
