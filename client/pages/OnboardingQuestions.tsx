@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowLeft, ChevronRight, Sparkles, FastForward } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import FlashNotification from "@/components/FlashNotification";
+import AnimatedProgress from "@/components/AnimatedProgress";
 
 interface Question {
   id: string;
@@ -16,8 +18,16 @@ interface Question {
 }
 
 export default function OnboardingQuestions() {
+  const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
+  const [flashNotification, setFlashNotification] = useState<{
+    type: 'success' | 'info' | 'warning' | 'error';
+    message: string;
+    isVisible: boolean;
+  } | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [animateQuestion, setAnimateQuestion] = useState(true);
 
   const questions: Question[] = [
     {
@@ -131,20 +141,53 @@ export default function OnboardingQuestions() {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    setIsLoading(true);
+    setAnimateQuestion(false);
+
+    // Simulate processing
+    await new Promise(resolve => setTimeout(resolve, 300));
+
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion((prev) => prev + 1);
+      setAnimateQuestion(true);
     } else {
       // Finished all questions
       console.log("Onboarding answers:", answers);
-      window.location.href = "/permissions";
+      setFlashNotification({
+        type: 'success',
+        message: 'Setup complete! Welcome to QuickCal AI! 🎉',
+        isVisible: true
+      });
+
+      setTimeout(() => {
+        navigate("/permissions");
+      }, 1500);
     }
+
+    setIsLoading(false);
   };
 
   const handlePrevious = () => {
     if (currentQuestion > 0) {
-      setCurrentQuestion((prev) => prev - 1);
+      setAnimateQuestion(false);
+      setTimeout(() => {
+        setCurrentQuestion((prev) => prev - 1);
+        setAnimateQuestion(true);
+      }, 150);
     }
+  };
+
+  const handleSkipAll = () => {
+    setFlashNotification({
+      type: 'info',
+      message: 'Questions skipped - basic setup complete! 🚀',
+      isVisible: true
+    });
+
+    setTimeout(() => {
+      navigate("/permissions");
+    }, 1000);
   };
 
   const isAnswered = () => {
@@ -160,42 +203,48 @@ export default function OnboardingQuestions() {
         {currentQuestion > 0 ? (
           <button
             onClick={handlePrevious}
-            className="p-2 hover:bg-gray-100 rounded-full"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <ArrowLeft className="w-6 h-6" />
           </button>
         ) : (
           <Link
             to="/signup-details"
-            className="p-2 hover:bg-gray-100 rounded-full"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <ArrowLeft className="w-6 h-6" />
           </Link>
         )}
-        <h1 className="text-xl font-semibold">Quick Questions</h1>
-        <div className="w-10"></div>
+        <div className="text-center">
+          <h1 className="text-xl font-semibold flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-primary" />
+            Quick Questions
+          </h1>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleSkipAll}
+          className="text-gray-500 hover:text-gray-700 p-2"
+        >
+          <FastForward className="w-4 h-4" />
+        </Button>
       </div>
 
       {/* Progress */}
       <div className="px-6 mb-8">
-        <div className="flex items-center gap-2 mb-2">
-          {questions.map((_, index) => (
-            <div
-              key={index}
-              className={`h-2 flex-1 rounded-full ${
-                index <= currentQuestion ? "bg-primary" : "bg-gray-200"
-              }`}
-            />
-          ))}
-        </div>
-        <p className="text-sm text-gray-600">
-          Question {currentQuestion + 1} of {questions.length}
-        </p>
+        <AnimatedProgress
+          currentStep={currentQuestion + 1}
+          totalSteps={questions.length}
+          showPercentage
+        />
       </div>
 
       {/* Question */}
       <div className="flex-1 px-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-8 leading-tight">
+        <h2 className={`text-2xl font-bold text-gray-900 mb-8 leading-tight transition-all duration-500 ${
+          animateQuestion ? 'opacity-100 translate-y-0' : 'opacity-50 translate-y-2'
+        }`}>
           {currentQ.question}
         </h2>
 
@@ -209,10 +258,10 @@ export default function OnboardingQuestions() {
               <button
                 key={option.id}
                 onClick={() => handleAnswerSelect(option.id)}
-                className={`w-full p-6 rounded-2xl border-2 transition-all text-left ${
+                className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 text-left transform hover:scale-[1.02] ${
                   isSelected
-                    ? "border-primary bg-primary/5"
-                    : "border-gray-200 hover:border-gray-300 bg-white"
+                    ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-lg"
+                    : "border-gray-200 hover:border-gray-300 bg-white hover:shadow-md"
                 }`}
               >
                 <div className="flex items-center gap-4">
@@ -258,13 +307,18 @@ export default function OnboardingQuestions() {
       </div>
 
       {/* Continue Button */}
-      <div className="px-6 py-8">
+      <div className="px-6 py-8 space-y-4">
         <Button
           onClick={handleNext}
-          disabled={!isAnswered()}
-          className="w-full h-14 bg-primary hover:bg-primary/90 disabled:bg-gray-300 text-white rounded-2xl text-lg font-medium flex items-center justify-center gap-2"
+          disabled={!isAnswered() || isLoading}
+          className="w-full h-14 bg-primary hover:bg-primary/90 disabled:bg-gray-300 text-white rounded-2xl text-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
         >
-          {currentQuestion < questions.length - 1 ? (
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              Processing...
+            </div>
+          ) : currentQuestion < questions.length - 1 ? (
             <>
               Continue
               <ChevronRight className="w-5 h-5" />
@@ -273,6 +327,16 @@ export default function OnboardingQuestions() {
             "Complete Setup"
           )}
         </Button>
+
+        <div className="text-center">
+          <Button
+            variant="ghost"
+            onClick={handleSkipAll}
+            className="text-gray-500 hover:text-gray-700 text-sm"
+          >
+            Skip all questions →
+          </Button>
+        </div>
       </div>
 
       {/* Nutritional Tip */}
@@ -294,6 +358,16 @@ export default function OnboardingQuestions() {
           </div>
         </div>
       </div>
+
+      {/* Flash Notification */}
+      {flashNotification && (
+        <FlashNotification
+          type={flashNotification.type}
+          message={flashNotification.message}
+          isVisible={flashNotification.isVisible}
+          onClose={() => setFlashNotification(null)}
+        />
+      )}
     </div>
   );
 }
