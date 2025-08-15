@@ -1,6 +1,13 @@
-import { useRef, useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { X, Camera, RotateCcw, Zap, CheckCircle, AlertCircle } from 'lucide-react';
+import { useRef, useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  X,
+  Camera,
+  RotateCcw,
+  Zap,
+  CheckCircle,
+  AlertCircle,
+} from "lucide-react";
 
 interface CameraScannerProps {
   onClose: () => void;
@@ -24,15 +31,20 @@ interface FoodDetection {
   };
 }
 
-export default function CameraScanner({ onClose, onFoodDetected }: CameraScannerProps) {
+export default function CameraScanner({
+  onClose,
+  onFoodDetected,
+}: CameraScannerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  
+
   const [isScanning, setIsScanning] = useState(false);
   const [detectedFoods, setDetectedFoods] = useState<FoodDetection[]>([]);
   const [cameraError, setCameraError] = useState<string | null>(null);
-  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
+  const [facingMode, setFacingMode] = useState<"user" | "environment">(
+    "environment",
+  );
   const [isCapturing, setIsCapturing] = useState(false);
 
   useEffect(() => {
@@ -45,10 +57,10 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
   const startCamera = async () => {
     try {
       setCameraError(null);
-      
+
       // Stop existing stream
       if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current.getTracks().forEach((track) => track.stop());
       }
 
       const constraints = {
@@ -56,7 +68,7 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
           facingMode: facingMode,
           width: { ideal: 1280 },
           height: { ideal: 720 },
-        }
+        },
       };
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -67,20 +79,20 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
         videoRef.current.play();
       }
     } catch (error) {
-      console.error('Error accessing camera:', error);
-      setCameraError('Unable to access camera. Please check permissions.');
+      console.error("Error accessing camera:", error);
+      setCameraError("Unable to access camera. Please check permissions.");
     }
   };
 
   const stopCamera = () => {
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
   };
 
   const switchCamera = () => {
-    setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
+    setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
   };
 
   const captureAndAnalyze = async () => {
@@ -92,7 +104,7 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
     try {
       const video = videoRef.current;
       const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
 
       if (!ctx) return;
 
@@ -105,14 +117,13 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
 
       // Convert canvas to blob for analysis
       const blob = await new Promise<Blob>((resolve) => {
-        canvas.toBlob((blob) => resolve(blob!), 'image/jpeg', 0.8);
+        canvas.toBlob((blob) => resolve(blob!), "image/jpeg", 0.8);
       });
 
       // Simulate AI food detection (in real app, send to AI service)
       await simulateFoodDetection(blob);
-
     } catch (error) {
-      console.error('Error during capture and analysis:', error);
+      console.error("Error during capture and analysis:", error);
     } finally {
       setIsCapturing(false);
       setIsScanning(false);
@@ -121,24 +132,24 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
 
   const simulateFoodDetection = async (imageBlob: Blob): Promise<void> => {
     // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Mock detection results
     const mockDetections: FoodDetection[] = [
       {
-        name: 'Apple',
+        name: "Apple",
         confidence: 0.92,
         calories: 52,
         macros: { protein: 0.3, carbs: 14, fat: 0.2 },
-        boundingBox: { x: 100, y: 150, width: 120, height: 130 }
+        boundingBox: { x: 100, y: 150, width: 120, height: 130 },
       },
       {
-        name: 'Banana',
+        name: "Banana",
         confidence: 0.87,
         calories: 89,
         macros: { protein: 1.1, carbs: 23, fat: 0.3 },
-        boundingBox: { x: 250, y: 180, width: 80, height: 200 }
-      }
+        boundingBox: { x: 250, y: 180, width: 80, height: 200 },
+      },
     ];
 
     setDetectedFoods(mockDetections);
@@ -209,7 +220,10 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
               <AlertCircle className="w-16 h-16 mx-auto mb-4 text-red-400" />
               <h3 className="text-lg font-semibold mb-2">Camera Error</h3>
               <p className="text-gray-300 mb-4">{cameraError}</p>
-              <Button onClick={startCamera} className="bg-primary hover:bg-primary/90">
+              <Button
+                onClick={startCamera}
+                className="bg-primary hover:bg-primary/90"
+              >
                 Try Again
               </Button>
             </div>
@@ -223,7 +237,7 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
               muted
             />
             <canvas ref={canvasRef} className="hidden" />
-            
+
             {/* Detection Overlay */}
             {renderDetectionOverlay()}
 
@@ -257,7 +271,9 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
           <div className="space-y-4">
             <div className="text-center">
               <p className="text-white font-medium mb-2">Food detected!</p>
-              <p className="text-white/70 text-sm">Tap on a food item to add it to your log</p>
+              <p className="text-white/70 text-sm">
+                Tap on a food item to add it to your log
+              </p>
             </div>
             <div className="space-y-2">
               {detectedFoods.map((food, index) => (
@@ -276,7 +292,8 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
                         </span>
                       </div>
                       <div className="text-sm text-gray-600 mt-1">
-                        {food.calories} kcal • P: {food.macros.protein}g C: {food.macros.carbs}g F: {food.macros.fat}g
+                        {food.calories} kcal • P: {food.macros.protein}g C:{" "}
+                        {food.macros.carbs}g F: {food.macros.fat}g
                       </div>
                     </div>
                   </div>
@@ -298,7 +315,9 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
               )}
             </Button>
             <p className="text-white font-medium mb-1">Point camera at food</p>
-            <p className="text-white/70 text-sm">Tap the camera button to scan</p>
+            <p className="text-white/70 text-sm">
+              Tap the camera button to scan
+            </p>
           </div>
         )}
 
@@ -307,7 +326,8 @@ export default function CameraScanner({ onClose, onFoodDetected }: CameraScanner
           <div className="flex items-start gap-2">
             <Zap className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
             <div className="text-white text-xs">
-              <span className="font-medium">Tips:</span> Ensure good lighting, hold steady, and center the food in the frame for best results.
+              <span className="font-medium">Tips:</span> Ensure good lighting,
+              hold steady, and center the food in the frame for best results.
             </div>
           </div>
         </div>

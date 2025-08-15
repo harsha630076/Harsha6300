@@ -1,23 +1,25 @@
-import { useState, useEffect } from 'react';
-import { authAPI } from '@/api/auth';
+import { useState, useEffect } from "react";
+import { authAPI } from "@/api/auth";
 
 export default function LoginStatus() {
-  const [status, setStatus] = useState<string>('Checking...');
-  const [lastError, setLastError] = useState<string>('');
+  const [status, setStatus] = useState<string>("Checking...");
+  const [lastError, setLastError] = useState<string>("");
 
   const testLogin = async () => {
-    setStatus('Testing login...');
-    setLastError('');
-    
+    setStatus("Testing login...");
+    setLastError("");
+
     try {
-      const result = await authAPI.login({ 
-        email: 'test@example.com', 
-        password: 'password123' 
+      const result = await authAPI.login({
+        email: "test@example.com",
+        password: "password123",
       });
-      setStatus(`✅ Login successful! Token: ${result.token.substring(0, 20)}...`);
+      setStatus(
+        `✅ Login successful! Token: ${result.token.substring(0, 20)}...`,
+      );
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
-      setStatus('❌ Login failed');
+      const errorMsg = error instanceof Error ? error.message : "Unknown error";
+      setStatus("❌ Login failed");
       setLastError(errorMsg);
     }
   };
@@ -34,7 +36,7 @@ export default function LoginStatus() {
       {lastError && (
         <p className="text-xs text-red-600 mb-2">Error: {lastError}</p>
       )}
-      <button 
+      <button
         onClick={testLogin}
         className="text-xs bg-blue-500 text-white px-2 py-1 rounded"
       >

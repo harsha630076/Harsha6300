@@ -66,7 +66,10 @@ export default function SimpleRegister() {
 
           <form onSubmit={handleRegister} className="space-y-6 mb-8">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+              <Label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-700"
+              >
                 Email
               </Label>
               <Input
@@ -82,7 +85,10 @@ export default function SimpleRegister() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+              <Label
+                htmlFor="password"
+                className="text-sm font-medium text-gray-700"
+              >
                 Password
               </Label>
               <div className="relative">
@@ -115,7 +121,10 @@ export default function SimpleRegister() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirm-password" className="text-sm font-medium text-gray-700">
+              <Label
+                htmlFor="confirm-password"
+                className="text-sm font-medium text-gray-700"
+              >
                 Confirm Password
               </Label>
               <Input
@@ -147,7 +156,10 @@ export default function SimpleRegister() {
           </form>
 
           <div className="text-center">
-            <Link to="/login" className="text-sm text-gray-600 hover:text-gray-900">
+            <Link
+              to="/login"
+              className="text-sm text-gray-600 hover:text-gray-900"
+            >
               Already have an account?{" "}
               <span className="text-primary font-medium">Sign In</span>
             </Link>

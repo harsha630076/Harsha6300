@@ -40,7 +40,7 @@ export default function Login() {
 
     try {
       await authAPI.sendOTP(email);
-      navigate("/otp-verification", { state: { email, type: 'email' } });
+      navigate("/otp-verification", { state: { email, type: "email" } });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to send OTP");
     } finally {
@@ -67,7 +67,10 @@ export default function Login() {
     setError("");
 
     try {
-      await authAPI.login({ email: "test@example.com", password: "password123" });
+      await authAPI.login({
+        email: "test@example.com",
+        password: "password123",
+      });
       navigate("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Demo login failed");
@@ -101,9 +104,12 @@ export default function Login() {
           {/* Demo Login Info */}
           <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
             <p className="text-blue-700 text-sm">
-              <strong>Demo Login:</strong><br />
-              Email: test@example.com<br />
-              Password: password123<br />
+              <strong>Demo Login:</strong>
+              <br />
+              Email: test@example.com
+              <br />
+              Password: password123
+              <br />
               Or create a new account below
             </p>
           </div>

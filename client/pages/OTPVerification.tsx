@@ -8,8 +8,12 @@ import { authAPI } from "@/api/auth";
 export default function OTPVerification() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { email = "user@example.com", phone = "+1 (555) 123-4567", type = 'email' } = location.state || {};
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const {
+    email = "user@example.com",
+    phone = "+1 (555) 123-4567",
+    type = "email",
+  } = location.state || {};
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState(60);
   const [isResending, setIsResending] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -25,7 +29,7 @@ export default function OTPVerification() {
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length > 1) return; // Only allow single digits
-    
+
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
@@ -37,32 +41,32 @@ export default function OTPVerification() {
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
   };
 
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData('text');
-    const digits = pastedData.replace(/\D/g, '').slice(0, 6);
-    
+    const pastedData = e.clipboardData.getData("text");
+    const digits = pastedData.replace(/\D/g, "").slice(0, 6);
+
     const newOtp = [...otp];
     for (let i = 0; i < digits.length; i++) {
       newOtp[i] = digits[i];
     }
     setOtp(newOtp);
-    
+
     // Focus on the next empty input or the last one
-    const nextEmptyIndex = newOtp.findIndex(digit => !digit);
+    const nextEmptyIndex = newOtp.findIndex((digit) => !digit);
     const focusIndex = nextEmptyIndex === -1 ? 5 : nextEmptyIndex;
     inputRefs.current[focusIndex]?.focus();
   };
 
   const handleVerify = async () => {
-    const otpCode = otp.join('');
+    const otpCode = otp.join("");
     if (otpCode.length !== 6) {
-      setError('Please enter all 6 digits');
+      setError("Please enter all 6 digits");
       return;
     }
 
@@ -71,11 +75,15 @@ export default function OTPVerification() {
 
     try {
       await authAPI.verifyOTP(email, otpCode);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Invalid OTP. Please try again.');
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Invalid OTP. Please try again.",
+      );
       // Clear OTP inputs on error
-      setOtp(['', '', '', '', '', '']);
+      setOtp(["", "", "", "", "", ""]);
       inputRefs.current[0]?.focus();
     } finally {
       setIsVerifying(false);
@@ -90,13 +98,13 @@ export default function OTPVerification() {
     try {
       await authAPI.sendOTP(email);
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Failed to resend OTP');
+      setError(error instanceof Error ? error.message : "Failed to resend OTP");
     } finally {
       setIsResending(false);
     }
   };
 
-  const isOtpComplete = otp.every(digit => digit !== '');
+  const isOtpComplete = otp.every((digit) => digit !== "");
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -113,11 +121,15 @@ export default function OTPVerification() {
           {/* Icon */}
           <div className="flex justify-center mb-8">
             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
-              {type === 'email' ? (
+              {type === "email" ? (
                 <Mail className="w-8 h-8 text-primary" />
               ) : (
-                <svg className="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                <svg
+                  className="w-8 h-8 text-primary"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                 </svg>
               )}
             </div>
@@ -126,12 +138,12 @@ export default function OTPVerification() {
           {/* Title and Description */}
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-gray-900 mb-3">
-              Verify your {type === 'email' ? 'email' : 'phone'}
+              Verify your {type === "email" ? "email" : "phone"}
             </h1>
             <p className="text-gray-600 text-sm leading-relaxed">
-              We've sent a 6-digit verification code to{' '}
+              We've sent a 6-digit verification code to{" "}
               <span className="font-medium text-gray-900">
-                {type === 'email' ? email : phone}
+                {type === "email" ? email : phone}
               </span>
             </p>
           </div>
@@ -159,7 +171,7 @@ export default function OTPVerification() {
                   onKeyDown={(e) => handleKeyDown(index, e)}
                   onPaste={handlePaste}
                   className={`w-12 h-14 text-center text-xl font-bold border-2 rounded-xl focus:border-primary ${
-                    error ? 'border-red-300' : ''
+                    error ? "border-red-300" : ""
                   }`}
                   autoComplete="one-time-code"
                   disabled={isVerifying}
@@ -180,7 +192,7 @@ export default function OTPVerification() {
                 Verifying...
               </div>
             ) : (
-              'Verify Code'
+              "Verify Code"
             )}
           </Button>
 
@@ -204,7 +216,7 @@ export default function OTPVerification() {
                     Sending...
                   </div>
                 ) : (
-                  'Resend verification code'
+                  "Resend verification code"
                 )}
               </Button>
             )}
@@ -213,9 +225,9 @@ export default function OTPVerification() {
           {/* Help Text */}
           <div className="text-center mt-6">
             <p className="text-xs text-gray-500">
-              Didn't receive the code? Check your spam folder or{' '}
+              Didn't receive the code? Check your spam folder or{" "}
               <Link to="/login" className="text-primary hover:underline">
-                try a different {type === 'email' ? 'email' : 'phone number'}
+                try a different {type === "email" ? "email" : "phone number"}
               </Link>
             </p>
           </div>

@@ -23,7 +23,7 @@ export default function SignupDetails() {
     dietType: "",
   });
   const [flashNotification, setFlashNotification] = useState<{
-    type: 'success' | 'info' | 'warning' | 'error';
+    type: "success" | "info" | "warning" | "error";
     message: string;
     isVisible: boolean;
   } | null>(null);
@@ -89,19 +89,19 @@ export default function SignupDetails() {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
     // Provide instant feedback for certain fields
-    if (field === 'age' && value) {
+    if (field === "age" && value) {
       const age = parseInt(value);
       if (age < 13) {
-        showFlash('warning', 'Age should be 13 or older');
+        showFlash("warning", "Age should be 13 or older");
       } else if (age > 100) {
-        showFlash('warning', 'Please enter a valid age');
+        showFlash("warning", "Please enter a valid age");
       }
     }
 
-    if (field === 'weight' && value) {
+    if (field === "weight" && value) {
       const weight = parseFloat(value);
       if (weight < 30 || weight > 300) {
-        showFlash('warning', 'Please enter a realistic weight');
+        showFlash("warning", "Please enter a realistic weight");
       }
     }
   };
@@ -111,15 +111,15 @@ export default function SignupDetails() {
     setIsLoading(true);
 
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     console.log("User details:", formData);
 
     setShowConfetti(true);
     setFlashNotification({
-      type: 'success',
-      message: 'Profile saved successfully! 🎉',
-      isVisible: true
+      type: "success",
+      message: "Profile saved successfully! 🎉",
+      isVisible: true,
     });
 
     setTimeout(() => {
@@ -129,9 +129,9 @@ export default function SignupDetails() {
 
   const handleSkip = () => {
     setFlashNotification({
-      type: 'info',
-      message: 'Details skipped - you can add them later! ⏭️',
-      isVisible: true
+      type: "info",
+      message: "Details skipped - you can add them later! ⏭️",
+      isVisible: true,
     });
 
     setTimeout(() => {
@@ -139,7 +139,10 @@ export default function SignupDetails() {
     }, 1000);
   };
 
-  const showFlash = (type: 'success' | 'info' | 'warning' | 'error', message: string) => {
+  const showFlash = (
+    type: "success" | "info" | "warning" | "error",
+    message: string,
+  ) => {
     setFlashNotification({ type, message, isVisible: true });
   };
 
@@ -147,7 +150,10 @@ export default function SignupDetails() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4">
-        <Link to="/signup" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+        <Link
+          to="/signup"
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+        >
           <ArrowLeft className="w-6 h-6" />
         </Link>
         <div className="text-center">
@@ -171,7 +177,10 @@ export default function SignupDetails() {
         <AnimatedProgress currentStep={2} totalSteps={4} showPercentage />
       </div>
 
-      <form onSubmit={handleSubmit} className="px-6 space-y-8 animate-in slide-in-from-bottom-4 duration-500">
+      <form
+        onSubmit={handleSubmit}
+        className="px-6 space-y-8 animate-in slide-in-from-bottom-4 duration-500"
+      >
         {/* Personal Information */}
         <div>
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -405,7 +414,7 @@ export default function SignupDetails() {
                 Saving...
               </div>
             ) : (
-              'Continue to Questions'
+              "Continue to Questions"
             )}
           </Button>
 

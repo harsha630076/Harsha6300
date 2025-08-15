@@ -24,7 +24,7 @@ export default function OnboardingQuestions() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
   const [flashNotification, setFlashNotification] = useState<{
-    type: 'success' | 'info' | 'warning' | 'error';
+    type: "success" | "info" | "warning" | "error";
     message: string;
     isVisible: boolean;
   } | null>(null);
@@ -149,7 +149,7 @@ export default function OnboardingQuestions() {
     setAnimateQuestion(false);
 
     // Simulate processing
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion((prev) => prev + 1);
@@ -159,9 +159,9 @@ export default function OnboardingQuestions() {
       console.log("Onboarding answers:", answers);
       setShowConfetti(true);
       setFlashNotification({
-        type: 'success',
-        message: 'Setup complete! Welcome to QuickCal AI! 🎉',
-        isVisible: true
+        type: "success",
+        message: "Setup complete! Welcome to QuickCal AI! 🎉",
+        isVisible: true,
       });
 
       setTimeout(() => {
@@ -184,9 +184,9 @@ export default function OnboardingQuestions() {
 
   const handleSkipAll = () => {
     setFlashNotification({
-      type: 'info',
-      message: 'Questions skipped - basic setup complete! 🚀',
-      isVisible: true
+      type: "info",
+      message: "Questions skipped - basic setup complete! 🚀",
+      isVisible: true,
     });
 
     setTimeout(() => {
@@ -246,9 +246,13 @@ export default function OnboardingQuestions() {
 
       {/* Question */}
       <div className="flex-1 px-6">
-        <h2 className={`text-2xl font-bold text-gray-900 mb-8 leading-tight transition-all duration-500 ${
-          animateQuestion ? 'opacity-100 translate-y-0' : 'opacity-50 translate-y-2'
-        }`}>
+        <h2
+          className={`text-2xl font-bold text-gray-900 mb-8 leading-tight transition-all duration-500 ${
+            animateQuestion
+              ? "opacity-100 translate-y-0"
+              : "opacity-50 translate-y-2"
+          }`}
+        >
           {currentQ.question}
         </h2>
 
@@ -350,7 +354,7 @@ export default function OnboardingQuestions() {
             "These questions help us create a personalized nutrition experience just for you! 🎯",
             "Don't worry - you can always update your preferences later in settings. 🔧",
             "The more details you share, the better our AI recommendations become! 🤖",
-            "Your privacy is important - we never share your personal health data. 🔒"
+            "Your privacy is important - we never share your personal health data. 🔒",
           ]}
           autoRotate={true}
         />

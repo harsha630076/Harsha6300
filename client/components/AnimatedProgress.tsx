@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface AnimatedProgressProps {
   currentStep: number;
@@ -7,11 +7,11 @@ interface AnimatedProgressProps {
   animated?: boolean;
 }
 
-export default function AnimatedProgress({ 
-  currentStep, 
-  totalSteps, 
+export default function AnimatedProgress({
+  currentStep,
+  totalSteps,
   showPercentage = false,
-  animated = true 
+  animated = true,
 }: AnimatedProgressProps) {
   const [animatedStep, setAnimatedStep] = useState(0);
 
@@ -37,11 +37,12 @@ export default function AnimatedProgress({
             key={index}
             className={`
               h-2 flex-1 rounded-full transition-all duration-500 ease-out
-              ${index < animatedStep 
-                ? 'bg-primary scale-105' 
-                : index === animatedStep
-                  ? 'bg-primary/60 animate-pulse'
-                  : 'bg-gray-200'
+              ${
+                index < animatedStep
+                  ? "bg-primary scale-105"
+                  : index === animatedStep
+                    ? "bg-primary/60 animate-pulse"
+                    : "bg-gray-200"
               }
             `}
           />

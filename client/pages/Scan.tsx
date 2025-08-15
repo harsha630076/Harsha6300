@@ -55,8 +55,11 @@ export default function Scan() {
       weight: "100g", // Default serving size
       accuracy: Math.round(food.confidence * 100),
       portionSize: 75,
-      image: food.name.includes('Apple') ? '🍎' :
-             food.name.includes('Banana') ? '🍌' : '🍽️',
+      image: food.name.includes("Apple")
+        ? "🍎"
+        : food.name.includes("Banana")
+          ? "🍌"
+          : "🍽️",
     };
 
     setScanResults([scanResult]);

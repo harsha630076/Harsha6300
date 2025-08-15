@@ -1,12 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface ConfettiAnimationProps {
   isVisible: boolean;
   duration?: number;
 }
 
-export default function ConfettiAnimation({ isVisible, duration = 3000 }: ConfettiAnimationProps) {
-  const [confetti, setConfetti] = useState<Array<{ id: number; x: number; delay: number; color: string }>>([]);
+export default function ConfettiAnimation({
+  isVisible,
+  duration = 3000,
+}: ConfettiAnimationProps) {
+  const [confetti, setConfetti] = useState<
+    Array<{ id: number; x: number; delay: number; color: string }>
+  >([]);
 
   useEffect(() => {
     if (isVisible) {
@@ -14,11 +19,13 @@ export default function ConfettiAnimation({ isVisible, duration = 3000 }: Confet
         id: i,
         x: Math.random() * 100,
         delay: Math.random() * 3000,
-        color: ['#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4'][Math.floor(Math.random() * 5)]
+        color: ["#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#06B6D4"][
+          Math.floor(Math.random() * 5)
+        ],
       }));
-      
+
       setConfetti(pieces);
-      
+
       const timer = setTimeout(() => {
         setConfetti([]);
       }, duration);
@@ -40,11 +47,11 @@ export default function ConfettiAnimation({ isVisible, duration = 3000 }: Confet
             backgroundColor: piece.color,
             animation: `confetti-fall 3s linear forwards`,
             animationDelay: `${piece.delay}ms`,
-            clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)'
+            clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
           }}
         />
       ))}
-      
+
       <style jsx>{`
         @keyframes confetti-fall {
           0% {

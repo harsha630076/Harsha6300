@@ -18,10 +18,10 @@ export default function UserMenu() {
   if (!user) return null;
 
   const userInitials = user.email
-    .split('@')[0]
-    .split('.')
-    .map(part => part[0])
-    .join('')
+    .split("@")[0]
+    .split(".")
+    .map((part) => part[0])
+    .join("")
     .toUpperCase()
     .slice(0, 2);
 
@@ -41,7 +41,7 @@ export default function UserMenu() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {user.profile?.name || 'User'}
+              {user.profile?.name || "User"}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {user.email}

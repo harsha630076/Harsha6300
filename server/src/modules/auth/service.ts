@@ -1,17 +1,17 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { prisma } from '../../lib/prisma';
-import { env } from '../../env';
-import { RegisterInput, LoginInput } from './schema';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { prisma } from "../../lib/prisma";
+import { env } from "../../env";
+import { RegisterInput, LoginInput } from "./schema";
 
 export class AuthService {
   static async register(data: RegisterInput) {
     const existingUser = await prisma.user.findUnique({
-      where: { email: data.email }
+      where: { email: data.email },
     });
 
     if (existingUser) {
-      throw new Error('User already exists');
+      throw new Error("User already exists");
     }
 
     const passwordHash = await bcrypt.hash(data.password, 12);
@@ -25,37 +25,33 @@ export class AuthService {
         id: true,
         email: true,
         createdAt: true,
-      }
+      },
     });
 
-    const token = jwt.sign(
-      { userId: user.id },
-      env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
+    const token = jwt.sign({ userId: user.id }, env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     return { user, token };
   }
 
   static async login(data: LoginInput) {
     const user = await prisma.user.findUnique({
-      where: { email: data.email }
+      where: { email: data.email },
     });
 
     if (!user) {
-      throw new Error('Invalid credentials');
+      throw new Error("Invalid credentials");
     }
 
     const isValid = await bcrypt.compare(data.password, user.passwordHash);
     if (!isValid) {
-      throw new Error('Invalid credentials');
+      throw new Error("Invalid credentials");
     }
 
-    const token = jwt.sign(
-      { userId: user.id },
-      env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
+    const token = jwt.sign({ userId: user.id }, env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     return {
       user: {
@@ -63,7 +59,7 @@ export class AuthService {
         email: user.email,
         createdAt: user.createdAt,
       },
-      token
+      token,
     };
   }
 
@@ -71,12 +67,12 @@ export class AuthService {
     const user = await prisma.user.findUnique({
       where: { id: userId },
       include: {
-        profile: true
-      }
+        profile: true,
+      },
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     return {

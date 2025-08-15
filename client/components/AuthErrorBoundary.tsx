@@ -1,6 +1,6 @@
-import React, { Component, ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import React, { Component, ReactNode } from "react";
+import { Button } from "@/components/ui/button";
+import { AlertTriangle, RefreshCw } from "lucide-react";
 
 interface Props {
   children: ReactNode;
@@ -22,7 +22,7 @@ export class AuthErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Auth Error Boundary caught an error:', error, errorInfo);
+    console.error("Auth Error Boundary caught an error:", error, errorInfo);
   }
 
   handleRetry = () => {
@@ -38,15 +38,16 @@ export class AuthErrorBoundary extends Component<Props, State> {
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <AlertTriangle className="w-8 h-8 text-red-600" />
             </div>
-            
+
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
               Authentication Error
             </h2>
-            
+
             <p className="text-gray-600 mb-6">
-              There was an issue with authentication. Please try refreshing the page.
+              There was an issue with authentication. Please try refreshing the
+              page.
             </p>
-            
+
             {this.state.error && (
               <div className="bg-gray-50 rounded-lg p-3 mb-6 text-left">
                 <p className="text-xs text-gray-700 font-mono">
@@ -54,7 +55,7 @@ export class AuthErrorBoundary extends Component<Props, State> {
                 </p>
               </div>
             )}
-            
+
             <div className="space-y-3">
               <Button
                 onClick={this.handleRetry}
@@ -63,10 +64,10 @@ export class AuthErrorBoundary extends Component<Props, State> {
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Retry
               </Button>
-              
+
               <Button
                 variant="outline"
-                onClick={() => window.location.href = '/login'}
+                onClick={() => (window.location.href = "/login")}
                 className="w-full"
               >
                 Go to Login

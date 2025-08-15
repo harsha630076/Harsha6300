@@ -42,34 +42,97 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Welcome />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/register" element={<SimpleRegister />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/permissions" element={<Permissions />} />
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/scan" element={<ProtectedRoute><Scan /></ProtectedRoute>} />
-          <Route path="/recommendations" element={<ProtectedRoute><Recommendations /></ProtectedRoute>} />
-          <Route path="/log" element={<ProtectedRoute><Log /></ProtectedRoute>} />
-          <Route path="/insights" element={<ProtectedRoute><Insights /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-          <Route path="/food-search" element={<ProtectedRoute><FoodSearch /></ProtectedRoute>} />
-          <Route path="/subscription" element={<Subscription />} />
-          <Route path="/ai-assistant" element={<ProtectedRoute><AIAssistant /></ProtectedRoute>} />
-          <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
-          <Route path="/signup-details" element={<SignupDetails />} />
-          <Route path="/phone-otp" element={<PhoneOTP />} />
-          <Route path="/otp-verification" element={<OTPVerification />} />
-          <Route
-            path="/onboarding-questions"
-            element={<OnboardingQuestions />}
-          />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsOfService />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Routes>
+              <Route path="/" element={<Welcome />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/register" element={<SimpleRegister />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/permissions" element={<Permissions />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/scan"
+                element={
+                  <ProtectedRoute>
+                    <Scan />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/recommendations"
+                element={
+                  <ProtectedRoute>
+                    <Recommendations />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/log"
+                element={
+                  <ProtectedRoute>
+                    <Log />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/insights"
+                element={
+                  <ProtectedRoute>
+                    <Insights />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/food-search"
+                element={
+                  <ProtectedRoute>
+                    <FoodSearch />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/subscription" element={<Subscription />} />
+              <Route
+                path="/ai-assistant"
+                element={
+                  <ProtectedRoute>
+                    <AIAssistant />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/notifications"
+                element={
+                  <ProtectedRoute>
+                    <Notifications />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/signup-details" element={<SignupDetails />} />
+              <Route path="/phone-otp" element={<PhoneOTP />} />
+              <Route path="/otp-verification" element={<OTPVerification />} />
+              <Route
+                path="/onboarding-questions"
+                element={<OnboardingQuestions />}
+              />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
