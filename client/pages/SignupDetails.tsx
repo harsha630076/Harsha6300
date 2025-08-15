@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowLeft, Sparkles, Skip } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import FlashNotification from "@/components/FlashNotification";
+import AnimatedProgress from "@/components/AnimatedProgress";
 
 export default function SignupDetails() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -16,6 +19,13 @@ export default function SignupDetails() {
     goal: "",
     dietType: "",
   });
+  const [flashNotification, setFlashNotification] = useState<{
+    type: 'success' | 'info' | 'warning' | 'error';
+    message: string;
+    isVisible: boolean;
+  } | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSkipConfirm, setShowSkipConfirm] = useState(false);
 
   const activityLevels = [
     {
@@ -72,38 +82,90 @@ export default function SignupDetails() {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+
+    // Provide instant feedback for certain fields
+    if (field === 'age' && value) {
+      const age = parseInt(value);
+      if (age < 13) {
+        showFlash('warning', 'Age should be 13 or older');
+      } else if (age > 100) {
+        showFlash('warning', 'Please enter a valid age');
+      }
+    }
+
+    if (field === 'weight' && value) {
+      const weight = parseFloat(value);
+      if (weight < 30 || weight > 300) {
+        showFlash('warning', 'Please enter a realistic weight');
+      }
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
     console.log("User details:", formData);
-    // Redirect to onboarding questions
-    window.location.href = "/onboarding-questions";
+
+    setFlashNotification({
+      type: 'success',
+      message: 'Profile saved successfully! 🎉',
+      isVisible: true
+    });
+
+    setTimeout(() => {
+      navigate("/onboarding-questions");
+    }, 1000);
+  };
+
+  const handleSkip = () => {
+    setFlashNotification({
+      type: 'info',
+      message: 'Details skipped - you can add them later! ⏭️',
+      isVisible: true
+    });
+
+    setTimeout(() => {
+      navigate("/onboarding-questions");
+    }, 1000);
+  };
+
+  const showFlash = (type: 'success' | 'info' | 'warning' | 'error', message: string) => {
+    setFlashNotification({ type, message, isVisible: true });
   };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4">
-        <Link to="/signup" className="p-2 hover:bg-gray-100 rounded-full">
+        <Link to="/signup" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
           <ArrowLeft className="w-6 h-6" />
         </Link>
-        <h1 className="text-xl font-semibold">Tell us about yourself</h1>
-        <div className="w-10"></div>
+        <div className="text-center">
+          <h1 className="text-xl font-semibold flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-primary" />
+            Tell us about yourself
+          </h1>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleSkip}
+          className="text-gray-500 hover:text-gray-700 p-2"
+        >
+          <span className="text-sm">Skip</span>
+        </Button>
       </div>
 
       {/* Progress */}
       <div className="px-6 mb-6">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-2 h-2 bg-primary rounded-full"></div>
-          <div className="w-2 h-2 bg-primary rounded-full"></div>
-          <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-          <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-        </div>
-        <p className="text-sm text-gray-600">Step 2 of 4</p>
+        <AnimatedProgress currentStep={2} totalSteps={4} showPercentage />
       </div>
 
-      <form onSubmit={handleSubmit} className="px-6 space-y-6">
+      <form onSubmit={handleSubmit} className="px-6 space-y-8 animate-in slide-in-from-bottom-4 duration-500">
         {/* Personal Information */}
         <div>
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -207,10 +269,10 @@ export default function SignupDetails() {
             {activityLevels.map((level) => (
               <label
                 key={level.id}
-                className={`block p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                className={`block p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 transform hover:scale-[1.02] ${
                   formData.activityLevel === level.id
-                    ? "border-primary bg-primary/5"
-                    : "border-gray-200 hover:border-gray-300"
+                    ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                    : "border-gray-200 hover:border-gray-300 hover:shadow-md"
                 }`}
               >
                 <input
@@ -254,10 +316,10 @@ export default function SignupDetails() {
             {goals.map((goal) => (
               <label
                 key={goal.id}
-                className={`block p-4 rounded-xl border-2 cursor-pointer transition-all text-center ${
+                className={`block p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 text-center transform hover:scale-105 ${
                   formData.goal === goal.id
-                    ? "border-primary bg-primary/5"
-                    : "border-gray-200 hover:border-gray-300"
+                    ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-lg"
+                    : "border-gray-200 hover:border-gray-300 hover:shadow-md"
                 }`}
               >
                 <input
@@ -325,15 +387,44 @@ export default function SignupDetails() {
         </div>
 
         {/* Submit Button */}
-        <div className="pb-8">
+        <div className="pb-8 space-y-4">
           <Button
             type="submit"
-            className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-2xl text-lg font-medium"
+            disabled={isLoading}
+            className="w-full h-14 bg-primary hover:bg-primary/90 disabled:opacity-50 text-white rounded-2xl text-lg font-medium transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
           >
-            Continue
+            {isLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Saving...
+              </div>
+            ) : (
+              'Continue to Questions'
+            )}
           </Button>
+
+          <div className="text-center">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={handleSkip}
+              className="text-gray-500 hover:text-gray-700 text-sm"
+            >
+              Skip this step for now →
+            </Button>
+          </div>
         </div>
       </form>
+
+      {/* Flash Notification */}
+      {flashNotification && (
+        <FlashNotification
+          type={flashNotification.type}
+          message={flashNotification.message}
+          isVisible={flashNotification.isVisible}
+          onClose={() => setFlashNotification(null)}
+        />
+      )}
     </div>
   );
 }
