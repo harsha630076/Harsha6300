@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import BottomNav from "@/components/BottomNav";
+import CameraScanner from "@/components/CameraScanner";
 import { ArrowLeft, Settings, Camera, Mic, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -9,6 +10,7 @@ export default function Scan() {
   const [isScanning, setIsScanning] = useState(false);
   const [scanResults, setScanResults] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
 
   const mockScanResults = [
     {
@@ -41,15 +43,25 @@ export default function Scan() {
   ];
 
   const handleScan = () => {
-    setIsScanning(true);
-    setShowResults(false);
+    setShowCamera(true);
+  };
 
-    // Simulate scanning process
-    setTimeout(() => {
-      setIsScanning(false);
-      setScanResults(mockScanResults);
-      setShowResults(true);
-    }, 3000);
+  const handleFoodDetected = (food: any) => {
+    // Convert food detection to scan result format
+    const scanResult = {
+      id: Date.now(),
+      name: food.name,
+      calories: food.calories,
+      weight: "100g", // Default serving size
+      accuracy: Math.round(food.confidence * 100),
+      portionSize: 75,
+      image: food.name.includes('Apple') ? '🍎' :
+             food.name.includes('Banana') ? '🍌' : '🍽️',
+    };
+
+    setScanResults([scanResult]);
+    setShowResults(true);
+    setShowCamera(false);
   };
 
   const handleAddToLog = () => {
@@ -57,6 +69,15 @@ export default function Scan() {
     // Redirect to dashboard
     window.location.href = "/dashboard";
   };
+
+  if (showCamera) {
+    return (
+      <CameraScanner
+        onClose={() => setShowCamera(false)}
+        onFoodDetected={handleFoodDetected}
+      />
+    );
+  }
 
   if (showResults) {
     return (

@@ -22,6 +22,7 @@ import AIAssistant from "./pages/AIAssistant";
 import Notifications from "./pages/Notifications";
 import SignupDetails from "./pages/SignupDetails";
 import PhoneOTP from "./pages/PhoneOTP";
+import OTPVerification from "./pages/OTPVerification";
 import OnboardingQuestions from "./pages/OnboardingQuestions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -52,6 +53,7 @@ const App = () => (
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/signup-details" element={<SignupDetails />} />
           <Route path="/phone-otp" element={<PhoneOTP />} />
+          <Route path="/otp-verification" element={<OTPVerification />} />
           <Route
             path="/onboarding-questions"
             element={<OnboardingQuestions />}
