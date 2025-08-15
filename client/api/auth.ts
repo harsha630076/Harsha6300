@@ -87,6 +87,11 @@ class AuthAPI {
   }
 
   async getMe(): Promise<User> {
+    const token = this.getToken();
+    if (!token) {
+      throw new Error('No authentication token');
+    }
+
     const response = await fetch(`${API_BASE}/auth/me`, {
       headers: this.getAuthHeaders(),
     });
@@ -96,7 +101,16 @@ class AuthAPI {
         this.logout();
         throw new Error('Authentication required');
       }
-      throw new Error('Failed to get user data');
+
+      let errorMessage = 'Failed to get user data';
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+      } catch {
+        // If we can't parse the error response, use default message
+      }
+
+      throw new Error(errorMessage);
     }
 
     return response.json();

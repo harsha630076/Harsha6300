@@ -30,13 +30,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const refreshUser = async () => {
     try {
-      if (authAPI.getToken()) {
+      const token = authAPI.getToken();
+      if (token) {
+        // Check if token looks valid (not mock token)
+        if (token.startsWith('mock-jwt-token-')) {
+          console.log('Mock token detected, skipping API call');
+          setUser({
+            id: 'mock-user-id',
+            email: 'demo@quickcalai.com',
+            createdAt: new Date().toISOString(),
+          });
+          return;
+        }
+
         const userData = await authAPI.getMe();
         setUser(userData);
       }
     } catch (error) {
       console.error('Failed to fetch user:', error);
-      authAPI.logout();
+      // Only logout if it's an auth error, not a network error
+      if (error instanceof Error && error.message.includes('Authentication required')) {
+        authAPI.logout();
+      }
       setUser(null);
     }
   };

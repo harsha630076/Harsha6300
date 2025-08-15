@@ -1,4 +1,3 @@
-
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../../lib/prisma';
@@ -71,12 +70,8 @@ export class AuthService {
   static async getMe(userId: string) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      include: { profile: true },
-      select: {
-        id: true,
-        email: true,
-        createdAt: true,
-        profile: true,
+      include: {
+        profile: true
       }
     });
 
@@ -84,6 +79,11 @@ export class AuthService {
       throw new Error('User not found');
     }
 
-    return user;
+    return {
+      id: user.id,
+      email: user.email,
+      createdAt: user.createdAt,
+      profile: user.profile,
+    };
   }
 }
