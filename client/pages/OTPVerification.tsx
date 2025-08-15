@@ -1,24 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Mail, Clock } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { authAPI } from "@/api/auth";
 
-interface OTPVerificationProps {
-  email?: string;
-  phone?: string;
-  type?: 'email' | 'phone';
-}
-
-export default function OTPVerification({ 
-  email = "user@example.com", 
-  phone = "+1 (555) 123-4567",
-  type = 'email' 
-}: OTPVerificationProps) {
+export default function OTPVerification() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { email = "user@example.com", phone = "+1 (555) 123-4567", type = 'email' } = location.state || {};
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timeLeft, setTimeLeft] = useState(60);
   const [isResending, setIsResending] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [error, setError] = useState("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
@@ -67,26 +62,21 @@ export default function OTPVerification({
   const handleVerify = async () => {
     const otpCode = otp.join('');
     if (otpCode.length !== 6) {
-      alert('Please enter all 6 digits');
+      setError('Please enter all 6 digits');
       return;
     }
 
     setIsVerifying(true);
-    
+    setError("");
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // For demo, accept any 6-digit code
-      console.log('OTP verified:', otpCode);
-      
-      // Store auth token and redirect
-      localStorage.setItem('authToken', 'demo-token-' + Date.now());
-      window.location.href = '/dashboard';
-      
+      await authAPI.verifyOTP(email, otpCode);
+      navigate('/dashboard');
     } catch (error) {
-      console.error('OTP verification failed:', error);
-      alert('Invalid OTP. Please try again.');
+      setError(error instanceof Error ? error.message : 'Invalid OTP. Please try again.');
+      // Clear OTP inputs on error
+      setOtp(['', '', '', '', '', '']);
+      inputRefs.current[0]?.focus();
     } finally {
       setIsVerifying(false);
     }
@@ -95,13 +85,12 @@ export default function OTPVerification({
   const handleResendOtp = async () => {
     setIsResending(true);
     setTimeLeft(60);
-    
+    setError("");
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('OTP resent to:', type === 'email' ? email : phone);
+      await authAPI.sendOTP(email);
     } catch (error) {
-      console.error('Failed to resend OTP:', error);
+      setError(error instanceof Error ? error.message : 'Failed to resend OTP');
     } finally {
       setIsResending(false);
     }
@@ -147,6 +136,13 @@ export default function OTPVerification({
             </p>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <p className="text-red-600 text-sm text-center">{error}</p>
+            </div>
+          )}
+
           {/* OTP Input */}
           <div className="mb-8">
             <div className="flex justify-center gap-3 mb-4">
@@ -162,8 +158,11 @@ export default function OTPVerification({
                   onChange={(e) => handleOtpChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
                   onPaste={handlePaste}
-                  className="w-12 h-14 text-center text-xl font-bold border-2 rounded-xl focus:border-primary"
+                  className={`w-12 h-14 text-center text-xl font-bold border-2 rounded-xl focus:border-primary ${
+                    error ? 'border-red-300' : ''
+                  }`}
                   autoComplete="one-time-code"
+                  disabled={isVerifying}
                 />
               ))}
             </div>
