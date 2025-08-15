@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/components/AuthProvider";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { AuthErrorBoundary } from "@/components/AuthErrorBoundary";
 import Welcome from "./pages/Welcome";
 import Signup from "./pages/Signup";
 import SimpleRegister from "./pages/SimpleRegister";
