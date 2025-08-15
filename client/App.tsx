@@ -10,6 +10,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Welcome from "./pages/Welcome";
 import Signup from "./pages/Signup";
+import SimpleRegister from "./pages/SimpleRegister";
 import Login from "./pages/Login";
 import Permissions from "./pages/Permissions";
 import Dashboard from "./pages/Dashboard";
@@ -42,6 +43,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/register" element={<SimpleRegister />} />
           <Route path="/login" element={<Login />} />
           <Route path="/permissions" element={<Permissions />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

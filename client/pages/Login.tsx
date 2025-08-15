@@ -217,7 +217,7 @@ export default function Login() {
 
           <div className="text-center mt-6">
             <Link
-              to="/signup"
+              to="/register"
               className="text-sm text-gray-600 hover:text-gray-900"
             >
               Don't have an account?{" "}
