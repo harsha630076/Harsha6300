@@ -6,6 +6,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import FlashNotification from "@/components/FlashNotification";
 import AnimatedProgress from "@/components/AnimatedProgress";
+import WelcomeSplash from "@/components/WelcomeSplash";
+import ConfettiAnimation from "@/components/ConfettiAnimation";
+import FloatingLabelInput from "@/components/FloatingLabelInput";
 
 export default function SignupDetails() {
   const navigate = useNavigate();
@@ -26,6 +29,8 @@ export default function SignupDetails() {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showSkipConfirm, setShowSkipConfirm] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const activityLevels = [
     {
@@ -110,6 +115,7 @@ export default function SignupDetails() {
 
     console.log("User details:", formData);
 
+    setShowConfetti(true);
     setFlashNotification({
       type: 'success',
       message: 'Profile saved successfully! 🎉',
@@ -118,7 +124,7 @@ export default function SignupDetails() {
 
     setTimeout(() => {
       navigate("/onboarding-questions");
-    }, 1000);
+    }, 1500);
   };
 
   const handleSkip = () => {
@@ -415,6 +421,15 @@ export default function SignupDetails() {
           </div>
         </div>
       </form>
+
+      {/* Welcome Splash */}
+      <WelcomeSplash
+        isVisible={showWelcome}
+        onComplete={() => setShowWelcome(false)}
+      />
+
+      {/* Confetti Animation */}
+      <ConfettiAnimation isVisible={showConfetti} />
 
       {/* Flash Notification */}
       {flashNotification && (
