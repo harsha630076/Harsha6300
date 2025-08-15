@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import FlashNotification from "@/components/FlashNotification";
 import AnimatedProgress from "@/components/AnimatedProgress";
+import ConfettiAnimation from "@/components/ConfettiAnimation";
+import HelpfulTips from "@/components/HelpfulTips";
 
 interface Question {
   id: string;
@@ -28,6 +30,7 @@ export default function OnboardingQuestions() {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [animateQuestion, setAnimateQuestion] = useState(true);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const questions: Question[] = [
     {
@@ -154,6 +157,7 @@ export default function OnboardingQuestions() {
     } else {
       // Finished all questions
       console.log("Onboarding answers:", answers);
+      setShowConfetti(true);
       setFlashNotification({
         type: 'success',
         message: 'Setup complete! Welcome to QuickCal AI! 🎉',
@@ -162,7 +166,7 @@ export default function OnboardingQuestions() {
 
       setTimeout(() => {
         navigate("/permissions");
-      }, 1500);
+      }, 2000);
     }
 
     setIsLoading(false);
@@ -339,25 +343,21 @@ export default function OnboardingQuestions() {
         </div>
       </div>
 
-      {/* Nutritional Tip */}
+      {/* Helpful Tips */}
       <div className="px-6 pb-8">
-        <div className="bg-purple-50 rounded-2xl p-4 border border-purple-100">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-purple-600 text-sm">🎯</span>
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-1">
-                Personalized Experience
-              </h4>
-              <p className="text-sm text-gray-600">
-                These questions help us create a completely personalized
-                nutrition experience tailored to your specific needs and goals.
-              </p>
-            </div>
-          </div>
-        </div>
+        <HelpfulTips
+          tips={[
+            "These questions help us create a personalized nutrition experience just for you! 🎯",
+            "Don't worry - you can always update your preferences later in settings. 🔧",
+            "The more details you share, the better our AI recommendations become! 🤖",
+            "Your privacy is important - we never share your personal health data. 🔒"
+          ]}
+          autoRotate={true}
+        />
       </div>
+
+      {/* Confetti Animation */}
+      <ConfettiAnimation isVisible={showConfetti} />
 
       {/* Flash Notification */}
       {flashNotification && (
